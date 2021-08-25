@@ -29,19 +29,19 @@ public class PauseControl : MonoBehaviour
             if(isPause)
             {
                 UnPause();
-                Time.timeScale = 0f;
                 PanelPause.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+
             }
             else
             {
 
                 Pause();
-                Time.timeScale = 1f;
                 PanelPause.SetActive(false);
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
+
             }
             isPause = !isPause;
         }
