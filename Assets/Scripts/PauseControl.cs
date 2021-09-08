@@ -15,12 +15,12 @@ public class PauseControl : MonoBehaviour
 
     void Pause()
     {
-        Time.timeScale = 0;
+        Time.timeScale = 1;
     }
 
     void UnPause()
     {
-        Time.timeScale = 1;
+        Time.timeScale = 0;
     }
     void Update()
     {

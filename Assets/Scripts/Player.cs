@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField] private bool isMovingHeight = false;
     private GameManager.Track currTrack;
     private Height currHeight;
-    
+
     private void Start(){
         currTrack = GameManager.Track.Middle;
     }
@@ -73,4 +73,7 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(transform.position.x,0,0);
         isMovingHeight = false;
     }
+
+    
+
 }
