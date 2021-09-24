@@ -19,7 +19,10 @@ public class SetCtrl : MonoBehaviour
 
         resolutions = Screen.resolutions;
 
-        resolutionDropdown.ClearOptions();
+        if (resolutionDropdown != null)
+        {
+            resolutionDropdown.ClearOptions();
+        }
 
         List<string> options = new List<string>();
 

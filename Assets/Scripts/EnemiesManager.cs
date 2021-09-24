@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemysManager : MonoBehaviour
+public class EnemiesManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] obstacles;
     private bool isActive = true;
@@ -23,9 +23,8 @@ public class EnemysManager : MonoBehaviour
     IEnumerator SpawnObstacles(){
         while(true){
             GameObject temp =  Instantiate(obstacles[GetRandomIndex()],positionToSpawn) as GameObject;
-            MovebleObstacle movebleObstacle = temp.GetComponent<MovebleObstacle>();
-            movebleObstacle.speed = GameManager.Instance.speedMovement;
-            Vector3 direction = movebleObstacle.GetRandomPosition();
+            MovableObstacle movableObstacle = temp.GetComponent<MovableObstacle>();
+            Vector3 direction = movableObstacle.GetRandomPosition();
             temp.transform.position = Vector3.Scale(direction,new Vector3(GameManager.Instance.scaleToTrackMove,GameManager.Instance.scaleToHeightMove,positionToSpawn.position.z));
             yield return new WaitForSeconds(timeBetweenSpawns);
         }

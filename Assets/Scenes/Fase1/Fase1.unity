@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -629,9 +629,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7663368a16c29741908c34c100afb64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleToTrackMove: 5
-  scaleToHeightMove: 5
-  speedMovement: 5
+  scaleToTrackMove: 2
+  scaleToHeightMove: 2
+  speedMovement: 10
 --- !u!4 &620127858
 Transform:
   m_ObjectHideFlags: 0
@@ -858,8 +858,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurveOrigin: {fileID: 3936093}
   x: 0
-  y: 120
-  falloff: 16.7
+  y: 0
+  falloff: 0
 --- !u!4 &1106417452
 Transform:
   m_ObjectHideFlags: 0
@@ -1245,11 +1245,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 917c43c43f2e10a438709666ac47aba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToMoveSides: 0.2
-  timeToMoveHeight: 0.2
   timeToStayHeight: 0.2
-  isMoving: 0
-  isMovingHeight: 0
+  minMov: 40
+  durationMoveHeight: 0.2
+  durationMoveTrack: 0.2
 --- !u!65 &1427519619
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1724,12 +1723,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacles:
-  - {fileID: 7298684781322360330, guid: 5c1f2addb64b5544994f688c8ccf00cb, type: 3}
+  - {fileID: 7157941521356363495, guid: 2be456a305eb37541903ac8df34862f1, type: 3}
   - {fileID: 3744597035845717186, guid: b3c1cb9fe38528249b0319f9b1071e16, type: 3}
   - {fileID: 6725302302609022901, guid: 1cee3cbcfd3b9d54085670f4036f7d46, type: 3}
   - {fileID: 6694782140489031331, guid: f94faa66aa550c64ca1760635fc44b89, type: 3}
   - {fileID: 3856543572212750534, guid: 992781cf945f95b4fb7e2dbba73ebc60, type: 3}
-  - {fileID: 7157941521356363495, guid: 2be456a305eb37541903ac8df34862f1, type: 3}
   timeBetweenSpawns: 1
   positionToSpawn: {fileID: 888588494}
 --- !u!4 &1487426680
