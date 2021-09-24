@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 1516744613839795106}
   - component: {fileID: 6859783558161175071}
   - component: {fileID: 8905571977248083008}
+  - component: {fileID: 5292621824730304759}
   m_Layer: 0
   m_Name: CaixaPapelao05
-  m_TagString: Untagged
+  m_TagString: DanoCaixa
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,4 +96,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   directionsToSpawn:
-  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+--- !u!65 &5292621824730304759
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6206005788801145775}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.698833, y: 0.15965305, z: 0.69883317}
+  m_Center: {x: 0, y: 0, z: 0}

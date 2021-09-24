@@ -6,7 +6,11 @@ public class MovableObstacle : MonoBehaviour
 {
     public Vector3[] directionsToSpawn;
     private void Update(){
-        transform.position += -Vector3.forward * GameManager.Instance.speedMovement * Time.deltaTime;
+        transform.position += (-Vector3.forward * GameManager.Instance.speedMovement * Time.deltaTime);
+        if (transform.position.z < -20)
+        {
+            Destroy(gameObject);
+        }
     }
     public Vector3 GetRandomPosition(){
         return directionsToSpawn[Random.Range(0,directionsToSpawn.Length)];

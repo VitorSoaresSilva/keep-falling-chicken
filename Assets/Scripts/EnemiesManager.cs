@@ -25,6 +25,7 @@ public class EnemiesManager : MonoBehaviour
             GameObject temp =  Instantiate(obstacles[GetRandomIndex()],positionToSpawn) as GameObject;
             MovableObstacle movableObstacle = temp.GetComponent<MovableObstacle>();
             Vector3 direction = movableObstacle.GetRandomPosition();
+            Debug.Log(positionToSpawn.position.z);
             temp.transform.position = Vector3.Scale(direction,new Vector3(GameManager.Instance.scaleToTrackMove,GameManager.Instance.scaleToHeightMove,positionToSpawn.position.z));
             yield return new WaitForSeconds(timeBetweenSpawns);
         }
