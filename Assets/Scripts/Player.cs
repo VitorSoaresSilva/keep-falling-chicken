@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 public enum Move {Right,Top, Left, Bottom, None}
 public enum Track {Left, Middle, Right}
@@ -19,12 +19,15 @@ public class Player : MonoBehaviour
     private Height currHeight;
     [SerializeField] private float durationMoveHeight = .2f;
     [SerializeField] private float durationMoveTrack = .2f;
-
+    
+    // Start is called before the first frame update
     private void Start()
     {
         currTrack = Track.Middle;
         currHeight = Height.Middle;
     }
+
+    // Update is called once per frame
     void Update()
     {
         if (Input.touchCount <= 0) return;
@@ -45,6 +48,8 @@ public class Player : MonoBehaviour
                 break;
             case TouchPhase.Canceled:
                 break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
 
         if (!hasTouched) return;
@@ -56,6 +61,18 @@ public class Player : MonoBehaviour
         hasTouched = true;
         desiredMove = Move.None;
     }
+
+    private Vector2 ConvertMoveToDirection(Move move)
+    {
+        float theta = (float)move * (2 * Mathf.PI) / 4;
+        return new Vector2(Mathf.Cos(theta), Mathf.Sin(theta));
+    }
+
+    private Move ConvertDirectionToMove(Vector2 direction)
+    {
+        return (Move)(Mathf.Round(4 * Mathf.Atan2(direction.y, direction.x) / (2 * Mathf.PI) + 4) % 4);
+    }
+
     private void TryMove(Move move)
     {
         Vector2 direction = ConvertMoveToDirection(move);
@@ -67,6 +84,7 @@ public class Player : MonoBehaviour
                 if (!isMovingTrack && !(desiredTrack > Track.Right || desiredTrack < Track.Left))
                 {
                     currTrack = desiredTrack;
+                    isMovingTrack = true;
                     StartCoroutine(ChangeTrack(durationMoveTrack, direction));
                 }
                 break;
@@ -76,7 +94,7 @@ public class Player : MonoBehaviour
                 if (!isMovingHeight && !(desiredHeight > Height.Top || desiredHeight < Height.Bottom))
                 {
                     currHeight = desiredHeight;
-                    
+                    isMovingHeight = true;
                     StartCoroutine(ChangeHeight(durationMoveHeight, direction)); // salvar numa var pra poder voltar e cancelar
                 }
                 break;
@@ -84,9 +102,10 @@ public class Player : MonoBehaviour
                 break;
         }
     }
+    
+
     IEnumerator ChangeTrack(float duration,Vector2 direction)
     {
-        isMovingTrack = true;
         float initialPositionTrack = transform.position.x;
         float currTime = 0;
         float endValue = GameManager.Instance.scaleToTrackMove * direction.x;
@@ -100,8 +119,9 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(endValue + initialPositionTrack,transform.position.y,0);
         isMovingTrack = false;
     }
-    IEnumerator ChangeHeight(float duration,Vector2 direction){
-        isMovingHeight = true;
+
+    IEnumerator ChangeHeight(float duration, Vector2 direction)
+    {
         float initialPositionHeight = transform.position.y;
         float currTime = 0;
         float endValue = GameManager.Instance.scaleToTrackMove * direction.y;
@@ -124,15 +144,8 @@ public class Player : MonoBehaviour
             currTime += Time.deltaTime;
             yield return null;
         }
+        transform.position = new Vector3(transform.position.x,endValue - initialPositionHeight,0);
+        currHeight = Height.Middle;
     }
-    private Vector2 ConvertMoveToDirection(Move move)
-    {
-        float theta = (float)move * (2 * Mathf.PI) / 4;
-        return new Vector2(Mathf.Cos(theta), Mathf.Sin(theta));
-    }
-
-    private Move ConvertDirectionToMove(Vector2 direction)
-    {
-        return (Move)(Mathf.Round(4 * Mathf.Atan2(direction.y, direction.x) / (2 * Mathf.PI) + 4) % 4);
-    }
+    
 }

@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class Colisao : MonoBehaviour
 {
-    //Colis„o com caixa(cubo vermelho)
+    //Colis√£o com caixa(cubo vermelho)
     public AudioClip col;
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "DanoCaixa")
+        if (other.gameObject.CompareTag("DanoCaixa"))
         {
             GetComponent<AudioSource>().PlayOneShot(col);
         }
     }
 
-    //Colis„o com caixa(cubo azul)
+    //Colis√£o com caixa(cubo azul)
 
 
 }

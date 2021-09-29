@@ -158,7 +158,7 @@ Camera:
   m_GameObject: {fileID: 3936090}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 4
+  m_ClearFlags: 2
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -1227,13 +1227,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1427519617}
-  - component: {fileID: 1427519619}
-  - component: {fileID: 1427519618}
-  - component: {fileID: 1427519623}
-  - component: {fileID: 1427519622}
-  - component: {fileID: 1427519624}
   - component: {fileID: 1427519621}
   - component: {fileID: 1427519620}
+  - component: {fileID: 1427519624}
+  - component: {fileID: 1427519622}
+  - component: {fileID: 1427519619}
+  - component: {fileID: 1427519623}
+  - component: {fileID: 1427519618}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1267,9 +1267,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 917c43c43f2e10a438709666ac47aba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToStayHeight: 0.2
+  timeToStayHeight: 1
   minMov: 40
-  durationMoveHeight: 0.2
+  durationMoveHeight: 0.3
   durationMoveTrack: 0.2
 --- !u!65 &1427519619
 BoxCollider:
