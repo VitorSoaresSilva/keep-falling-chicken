@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemiesManager : MonoBehaviour
 {
@@ -8,24 +10,35 @@ public class EnemiesManager : MonoBehaviour
     private bool isActive = true;
     [SerializeField] private float timeBetweenSpawns = 2;
     [SerializeField] private Transform positionToSpawn;
-    private void Start(){
-        ChangeState(true);
+    public float currSpeedMovement;
+    public static EnemiesManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if(Instance != null && Instance != this){
+            Destroy(this.gameObject);
+        }else{
+            Instance = this;
+            // DontDestroyOnLoad(this.gameObject);
+        }
     }
 
     public void ChangeState(bool newState){
         isActive = newState;
         if(newState == true){
+            //TODO: criar uma maneira de pausar o objetos ja andando
+            Time.timeScale = 1;
             StartCoroutine(nameof(SpawnObstacles));
         }else{
+            Time.timeScale = 0;
             StopCoroutine(nameof(SpawnObstacles));
         }
     }
-    IEnumerator SpawnObstacles(){
+    IEnumerator SpawnObstacles(){       
         while(true){
             GameObject temp =  Instantiate(obstacles[GetRandomIndex()],positionToSpawn) as GameObject;
             MovableObstacle movableObstacle = temp.GetComponent<MovableObstacle>();
             Vector3 direction = movableObstacle.GetRandomPosition();
-            Debug.Log(positionToSpawn.position.z);
             temp.transform.position = Vector3.Scale(direction,new Vector3(GameManager.Instance.scaleToTrackMove,GameManager.Instance.scaleToHeightMove,positionToSpawn.position.z));
             yield return new WaitForSeconds(timeBetweenSpawns);
         }
@@ -33,5 +46,12 @@ public class EnemiesManager : MonoBehaviour
     private int GetRandomIndex(){
         return Random.Range(0,obstacles.Length);
     }
+
+    public void ChangeSpeed(float value)
+    {
+        currSpeedMovement = value;
+    }
+
+    
 
 }

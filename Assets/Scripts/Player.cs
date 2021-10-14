@@ -6,6 +6,8 @@ public enum Track {Left, Middle, Right}
 public enum Height{Bottom,Middle,Top}
 public class Player : MonoBehaviour
 {
+    public int Money { get; private set; }
+    
     private Vector3 initialTouch;
     private Vector3 finalTouch;
     private bool hasTouched = false;
@@ -19,14 +21,19 @@ public class Player : MonoBehaviour
     private Height currHeight;
     [SerializeField] private float durationMoveHeight = .2f;
     [SerializeField] private float durationMoveTrack = .2f;
+
     
+    // [SerializeField] private PlayerManager playerController;
+
+    private bool alreadyDamaged = false;
+
+    [SerializeField] private float timeBetweenDamages;
     // Start is called before the first frame update
     private void Start()
     {
         currTrack = Track.Middle;
         currHeight = Height.Middle;
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -62,6 +69,61 @@ public class Player : MonoBehaviour
         desiredMove = Move.None;
     }
 
+    #region Collision
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out GoldComponent goldComponent))
+        {
+            GameManager.Instance.EarnGold(goldComponent.gold);
+            Destroy(other.gameObject);
+        }
+        else if(other.CompareTag("Obstacle"))
+        {
+            if (PowerUpsManager.Instance.powerUps[(int)PowerUpTypes.dash].inUse)
+            {
+                //effect
+                Destroy(other.gameObject);
+            }
+            else
+            {
+                if (alreadyDamaged)
+                {
+                    //end game
+                    GameManager.Instance.FinishRun();
+                }
+                else
+                {
+                    alreadyDamaged = true;
+                    StartCoroutine(TimeToSecondDamage());
+                }
+                //effect
+                Destroy(other.gameObject);
+            }
+            //take damage
+            //if it is the second in a few seconds -> end game
+            /* if is the first ->
+             * animation
+             * sound effect
+             * particles effects
+             * velocity -= some value
+             */
+        }
+    }
+
+    IEnumerator TimeToSecondDamage()
+    {
+        yield return new WaitForSeconds(timeBetweenDamages);
+        alreadyDamaged = false;
+    }
+
+    #endregion
+
+    #region MovementFunctions
+
+    
+
+    
     private Vector2 ConvertMoveToDirection(Move move)
     {
         float theta = (float)move * (2 * Mathf.PI) / 4;
@@ -147,5 +209,5 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(transform.position.x,endValue - initialPositionHeight,0);
         currHeight = Height.Middle;
     }
-    
+    #endregion
 }

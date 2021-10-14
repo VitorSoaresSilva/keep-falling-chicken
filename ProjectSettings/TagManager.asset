@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - DanoCaixa
+  - Obstacle
   layers:
   - Default
   - TransparentFX

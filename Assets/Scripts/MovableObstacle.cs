@@ -6,7 +6,7 @@ public class MovableObstacle : MonoBehaviour
 {
     public Vector3[] directionsToSpawn;
     private void Update(){
-        transform.position += (-Vector3.forward * GameManager.Instance.speedMovement * Time.deltaTime);
+        transform.position += (-Vector3.forward * EnemiesManager.Instance.currSpeedMovement * Time.deltaTime);
         if (transform.position.z < -20)
         {
             Destroy(gameObject);
