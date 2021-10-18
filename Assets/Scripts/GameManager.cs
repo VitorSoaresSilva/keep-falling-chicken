@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] private int _gold;
     [SerializeField] private int _runGold;
+
+    [Header("Player")] 
+    [SerializeField] private Player player;
     #region Variable ui bind
     public int RunGold
     {
@@ -45,23 +48,15 @@ public class GameManager : MonoBehaviour
         set
         {
             _gold = value;
-            uiLobby.goldText.text = _gold.ToString();
-            uiStore.goldText.text = _gold.ToString();
+            UILobby.Instance.goldText.text = _gold.ToString();
+            UIStore.Instance.goldText.text = _gold.ToString();
         }
     }
     #endregion
 
     [Header("UI")] 
-    [SerializeField] private GameObject canvasLobby;
-    [SerializeField] private GameObject canvasGame;
     [SerializeField] private GameObject canvasTryAgain;
     [SerializeField] private GameObject canvasStart;
-    [SerializeField] private GameObject canvasStore;
-    public UIController uiController;
-    
-    // public UIGame uiGame;
-    private UILobby uiLobby;
-    public UIStore uiStore;
 
     private void Awake(){
         if(Instance != null && Instance != this){
@@ -69,10 +64,6 @@ public class GameManager : MonoBehaviour
         }else{
             Instance = this;
         }
-
-        // uiGame = canvasGame.GetComponent<UIGame>();
-        uiLobby = canvasLobby.GetComponent<UILobby>();
-        uiStore = canvasStore.GetComponent<UIStore>();
         ChangeGameState(GameState.Begin);
     }
 
@@ -103,9 +94,10 @@ public class GameManager : MonoBehaviour
     {
         RunGold = 0;
         PowerUpsManager.Instance.powerUps[(int)PowerUpTypes.dash].StartRun();
+        EnemiesManager.Instance.ChangeState(true);
         UIGame.Instance.dashSlider.value = 0;
         ChangeGameState(GameState.Running);
-        EnemiesManager.Instance.ChangeState(true);
+        player.enabled = true;
     }
 
     public void RealFinish()
@@ -120,8 +112,10 @@ public class GameManager : MonoBehaviour
 
     public void FinishRun()
     {
-        EnemiesManager.Instance.ChangeState(false);
+        Debug.Log("end game");
         ChangeGameState(GameState.WillTryAgain);
+        EnemiesManager.Instance.ChangeState(false);
+        player.enabled = false;
         //TODO: verificar se o cara vai jogar de novo ou nao
     }
 
@@ -136,14 +130,17 @@ public class GameManager : MonoBehaviour
         if (!PowerUpsManager.Instance.powerUps[(int)PowerUpTypes.dash].inUse)
         {
             PowerUpsManager.Instance.powerUps[(int)PowerUpTypes.dash].Collect();
-            // Dash++;
-            //TODO: mudar o valor do Dash
         }
     }
 
     public void DEV__EarnGold()
     {
         EarnGold(Random.Range(1,20));
+    }
+
+    public void DEV__MagnetActivate()
+    {
+        PowerUpsManager.Instance.powerUps[(int)PowerUpTypes.magnet].Collect();        
     }
 
     public void ToggleStore(bool open)
@@ -154,39 +151,47 @@ public class GameManager : MonoBehaviour
 
     private void ChangeGameState(GameState newGameState)
     {
+        Debug.Log("Change state" +newGameState);
         gameState = newGameState;
-        UIGame.Instance.canvas.SetActive(false);
+        StartCoroutine(nameof(CloseCanvas));
+    }
+
+    private IEnumerator CloseCanvas()
+    {
+        yield return new WaitForSeconds(0.2f);
+        Debug.Log("DEpois do wait");
         canvasStart.SetActive(false);
         canvasTryAgain.SetActive(false);
-        canvasLobby.SetActive(false);
-        canvasStore.SetActive(false);
+        UIGame.Instance.canvas.SetActive(false);
+        UILobby.Instance.canvas.SetActive(false);
+        UIStore.Instance.canvas.SetActive(false);
+        StartCoroutine(nameof(OpenCanvas));
+        yield return null;
+    }
+
+    private IEnumerator OpenCanvas()
+    {
+        Debug.Log("Open canvas" + gameState);
         switch (gameState)
         {
             case GameState.Begin:
                 canvasStart.SetActive(true);
                 break;
             case GameState.Lobby:
-                /*
-                 * Update lobby ui
-                 * destroy player
-                 */
-                canvasLobby.SetActive(true);
+                UILobby.Instance.canvas.SetActive(true);
                 break;
             case GameState.Running:
-                /*
-                 * update game hud
-                 */
                 UIGame.Instance.canvas.SetActive(true);
                 break;
             case GameState.WillTryAgain:
-                /*
-                 * show canvas to try again
-                 */
+                Debug.Log("try again");
                 canvasTryAgain.SetActive(true);
                 break;
             case GameState.Store:
-                canvasStore.SetActive(true);
+                UIStore.Instance.canvas.SetActive(true);
                 break;
         }
+
+        yield return null;
     }
 }

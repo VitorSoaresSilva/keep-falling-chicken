@@ -4,19 +4,30 @@ using UnityEngine;
 
 public class PUMagnet : PowerUp
 {
-
+    [SerializeField] private GameObject magnetCollider;
     public override void Use()
     {
-        throw new System.NotImplementedException();
+        inUse = true;
+        magnetCollider.SetActive(true);
+        StartCoroutine(nameof(Disable));
     }
 
     public override void StartRun()
     {
-        throw new System.NotImplementedException();
+        magnetCollider.SetActive(false);
+    }
+
+    public override void AfterDisable()
+    {
+        base.AfterDisable();
+        magnetCollider.SetActive(false);
     }
 
     public override void Collect()
     {
-        throw new System.NotImplementedException();
+        if (!inUse)
+        {
+            Use();
+        }
     }
 }

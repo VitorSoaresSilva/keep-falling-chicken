@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -6493027224456703396}
   m_Layer: 0
   m_Name: Diagonal
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65,7 +65,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8851540102417208555, guid: 7c80a543c9bcc3548a6851647cc0200f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.968
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8851540102417208555, guid: 7c80a543c9bcc3548a6851647cc0200f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -127,7 +127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4703520586398656062, guid: 6345a35fa8b3850448f099029a6f4843, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4703520586398656062, guid: 6345a35fa8b3850448f099029a6f4843, type: 3}
       propertyPath: m_LocalPosition.y
@@ -193,7 +193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8211745558862955617, guid: 4d2b185b0eeaacf4590d91f189c6f845, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.5
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8211745558862955617, guid: 4d2b185b0eeaacf4590d91f189c6f845, type: 3}
       propertyPath: m_LocalPosition.z

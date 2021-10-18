@@ -10,6 +10,11 @@ public class PUDoublePoints : PowerUp
         throw new System.NotImplementedException();
     }
 
+    public override void AfterDisable()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void StartRun()
     {
         throw new System.NotImplementedException();

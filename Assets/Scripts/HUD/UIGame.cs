@@ -19,6 +19,5 @@ public class UIGame : MonoBehaviour
       }else{
          Instance = this;
       }
-      canvas = this.gameObject;
    }
 }

@@ -16,6 +16,7 @@ public class PowerUpsManager : MonoBehaviour
     public static PowerUpsManager Instance { get; private set; }
     public PowerUp[] powerUps;
     private const int AmountPowerUps = (int)PowerUpTypes.COUNT;
+    
     private void Awake()
     {
         if(Instance != null && Instance != this){
@@ -31,8 +32,8 @@ public class PowerUpsManager : MonoBehaviour
         GameManager.Instance.Gold -= powerUps[index].Cost;
         powerUps[index].Upgrade();
 
-        GameManager.Instance.uiStore.UpdateLevels(GetLevels());
-        GameManager.Instance.uiStore.UpdateCosts(GetCostsText());
+        UIStore.Instance.UpdateLevels(GetLevels());
+        UIStore.Instance.UpdateCosts(GetCostsText());
         
         SaveSystem.SaveGame();
     }
@@ -45,8 +46,8 @@ public class PowerUpsManager : MonoBehaviour
         {
             powerUps[i].Init((PowerUpTypes)i,levels[i]);
         }
-        GameManager.Instance.uiStore.UpdateLevels(levels);
-        GameManager.Instance.uiStore.UpdateCosts(GetCostsText());
+        UIStore.Instance.UpdateLevels(levels);
+        UIStore.Instance.UpdateCosts(GetCostsText());
     }
 
     public int[] GetLevels()
@@ -99,18 +100,9 @@ public class PowerUpsManager : MonoBehaviour
     };
     public static readonly float[][] Values =
     {
-        new float[]{1,1,2,3,4,5,6,7,8,9}, // magnet
+        new float[]{5,6,7,8,9,10,11,12,13,14}, // magnet
         new float[]{5,6,7,8,9,10,11,12,13,14}, // dash
         new float[]{5,6,7,8,9,10,11,12,13,14}, // shield
         new float[]{5,6,7,8,9,10,11,12,13,14}, // base
     };
-
-    /*
-     *
-     *
-     *
-     * TODO: sistema de mudar a velocidade dos inimigos ta bem zaodo
-     * e o sistema de dash estar no game manager tambem ta estranho
-     * 
-     */
 }

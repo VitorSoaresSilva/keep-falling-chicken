@@ -11,6 +11,22 @@ public abstract class PowerUp: MonoBehaviour
     public bool inUse;
     // public 
     public abstract void Use();
+
+    public virtual IEnumerator Disable()
+    {
+        float currTime = 0;
+        while (currTime < Value)
+        {
+            currTime += Time.deltaTime;
+            yield return null;
+        }
+        AfterDisable();
+    }
+
+    public virtual void AfterDisable()
+    {
+        inUse = false;
+    }
     public abstract void StartRun();
     public abstract void Collect();
 

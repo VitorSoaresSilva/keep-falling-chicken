@@ -16,11 +16,11 @@ public class PUDash : PowerUp
            if (value < amountCoinsToDash)
            {
                currAmountCoinsToDash = value;
-               UIGame.Instance.dash.enabled = false;
+               UIGame.Instance.dash.gameObject.SetActive(false);
            }
            else
            {
-               UIGame.Instance.dash.enabled = true;
+               UIGame.Instance.dash.gameObject.SetActive(true);
                currAmountCoinsToDash = amountCoinsToDash;
            }
            UIGame.Instance.dashSlider.value = (float)currAmountCoinsToDash / amountCoinsToDash;
@@ -29,17 +29,17 @@ public class PUDash : PowerUp
 
    public override void Use()
     {
-        EnemiesManager.Instance.ChangeSpeed(DashSpeed + GameManager.Instance.speedMovement);
-        UIGame.Instance.dash.enabled = false;
+        EnemiesManager.Instance.ChangeSpeed(DashSpeed);
+        UIGame.Instance.dash.gameObject.SetActive(false);
         inUse = true;
-        StartCoroutine(nameof(DisableDash));
+        StartCoroutine(nameof(Disable));
     }
 
-    public override void StartRun()
+   public override void StartRun()
     {
         StopAllCoroutines();
         Dash = 0;
-        UIGame.Instance.dash.enabled = false;
+        UIGame.Instance.dash.gameObject.SetActive(false);
         UIGame.Instance.dashSlider.value = 0;
     }
 
@@ -49,7 +49,7 @@ public class PUDash : PowerUp
     }
 
 
-    private IEnumerator DisableDash()
+    public override IEnumerator Disable()
     {
         float currTime = 0;
         while (currTime < Value)

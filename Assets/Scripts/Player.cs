@@ -78,6 +78,11 @@ public class Player : MonoBehaviour
             GameManager.Instance.EarnGold(goldComponent.gold);
             Destroy(other.gameObject);
         }
+        else if (other.TryGetComponent(out PowerUpColetavel powerUpColetavel))
+        {
+            PowerUpsManager.Instance.powerUps[powerUpColetavel.type].Collect();
+            Destroy(other.gameObject);
+        }
         else if(other.CompareTag("Obstacle"))
         {
             if (PowerUpsManager.Instance.powerUps[(int)PowerUpTypes.dash].inUse)
@@ -138,6 +143,7 @@ public class Player : MonoBehaviour
     private void TryMove(Move move)
     {
         Vector2 direction = ConvertMoveToDirection(move);
+        Debug.Log("direction: " + direction);
         switch (move)
         {
             case Move.Right:
@@ -153,6 +159,7 @@ public class Player : MonoBehaviour
             case Move.Bottom:
             case Move.Top:
                 Height desiredHeight = (Height)(direction.y + (int)currHeight);
+                Debug.Log("Desired heigth " + desiredHeight);
                 if (!isMovingHeight && !(desiredHeight > Height.Top || desiredHeight < Height.Bottom))
                 {
                     currHeight = desiredHeight;
@@ -195,7 +202,6 @@ public class Player : MonoBehaviour
             yield return null;
         }
         transform.position = new Vector3(transform.position.x,endValue + initialPositionHeight,0);
-        isMovingHeight = false;
         yield return new WaitForSeconds(timeToStayHeight);
         initialPositionHeight = transform.position.y;
         currTime = 0;
@@ -208,6 +214,7 @@ public class Player : MonoBehaviour
         }
         transform.position = new Vector3(transform.position.x,endValue - initialPositionHeight,0);
         currHeight = Height.Middle;
+        isMovingHeight = false;
     }
     #endregion
 }

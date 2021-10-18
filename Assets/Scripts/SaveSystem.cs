@@ -46,14 +46,6 @@ public static class SaveSystem
         stream.Close();
         PowerUpsManager.Instance.PowerUpsInit(playerData.powerUpLevels);
     }
-
-    // public static void SavePowerUps(PowerUp[] powerUps)
-    // {
-    //     BinaryFormatter formatter = new BinaryFormatter();
-    //     string path = Application.persistentDataPath + "/power_ups.data";
-    //     FileStream stream = new FileStream(path, FileMode.Create);
-    //     // formatter 
-    // }
     
     
     
