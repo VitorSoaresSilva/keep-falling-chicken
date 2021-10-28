@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 911985741422691254}
   - component: {fileID: 911985741422691253}
   - component: {fileID: 911985741422691255}
+  - component: {fileID: 8517333445276969687}
   m_Layer: 0
   m_Name: Suzete
   m_TagString: Untagged
@@ -130,3 +131,22 @@ MonoBehaviour:
   durationMoveHeight: 0.2
   durationMoveTrack: 0.2
   timeBetweenDamages: 10
+--- !u!95 &8517333445276969687
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29677891425062618}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 364c7102e337f0e4cb9569d4e21bd6b7, type: 3}
+  m_Controller: {fileID: 9100000, guid: d63c9aad2050ce442b58502770c11b04, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
