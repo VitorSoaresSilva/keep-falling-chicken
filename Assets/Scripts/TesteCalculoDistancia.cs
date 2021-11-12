@@ -39,7 +39,6 @@ public class TesteCalculoDistancia : MonoBehaviour
     private float CalculateTime()
     {
         float time = distance / speed;
-        Debug.Log(time);
         return time;
     }
 }

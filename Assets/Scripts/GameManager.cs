@@ -15,24 +15,22 @@ enum GameState
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-
     [Header("Movement")]
     public float scaleToTrackMove = 5;
     public float scaleToHeightMove = 5;
     public float speedMovement = 5;
-
+    
     [Header("Game state")]
     private GameState gameState = GameState.Begin;
-
-    [Header("Gold")] 
     
+    [Header("Gold")]
     [SerializeField] private int _gold;
     [SerializeField] private int _runGold;
 
     [Header("Player")] 
     [SerializeField] private Player player;
     #region Variable ui bind
-    public int RunGold
+    private int RunGold
     {
         get => _runGold;
         set
@@ -41,7 +39,6 @@ public class GameManager : MonoBehaviour
             UIGame.Instance.runGoldText.text = _runGold.ToString();
         }
     }
-
     public int Gold
     {
         get => _gold;
@@ -64,6 +61,7 @@ public class GameManager : MonoBehaviour
         }else{
             Instance = this;
         }
+        DontDestroyOnLoad(this.gameObject);
         ChangeGameState(GameState.Begin);
     }
 
@@ -78,6 +76,7 @@ public class GameManager : MonoBehaviour
          * if !configData.hasAlreadyWatchedCutscene -> play cutscene
          */
         Gold = data.gold;
+        player.enabled = false;
         PowerUpsManager.Instance.PowerUpsInit(data.powerUpLevels);
         ChangeGameState(GameState.Lobby);
     }
@@ -106,7 +105,7 @@ public class GameManager : MonoBehaviour
         Gold += RunGold;
         RunGold = 0;
         
-        ChangeGameState(GameState.Lobby);
+        // ChangeGameState(GameState.Lobby);
         SaveSystem.SaveGame();
     }
 
@@ -151,7 +150,6 @@ public class GameManager : MonoBehaviour
 
     private void ChangeGameState(GameState newGameState)
     {
-        Debug.Log("Change state" +newGameState);
         gameState = newGameState;
         StartCoroutine(nameof(CloseCanvas));
     }
@@ -159,19 +157,17 @@ public class GameManager : MonoBehaviour
     private IEnumerator CloseCanvas()
     {
         yield return new WaitForSeconds(0.2f);
-        Debug.Log("DEpois do wait");
         canvasStart.SetActive(false);
         canvasTryAgain.SetActive(false);
         UIGame.Instance.canvas.SetActive(false);
         UILobby.Instance.canvas.SetActive(false);
         UIStore.Instance.canvas.SetActive(false);
-        StartCoroutine(nameof(OpenCanvas));
+        OpenCanvas();
         yield return null;
     }
 
-    private IEnumerator OpenCanvas()
+    private void OpenCanvas()
     {
-        Debug.Log("Open canvas" + gameState);
         switch (gameState)
         {
             case GameState.Begin:
@@ -184,14 +180,11 @@ public class GameManager : MonoBehaviour
                 UIGame.Instance.canvas.SetActive(true);
                 break;
             case GameState.WillTryAgain:
-                Debug.Log("try again");
                 canvasTryAgain.SetActive(true);
                 break;
             case GameState.Store:
                 UIStore.Instance.canvas.SetActive(true);
                 break;
         }
-
-        yield return null;
     }
 }

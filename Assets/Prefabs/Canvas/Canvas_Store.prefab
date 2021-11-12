@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 10ebe666cad2cbc4b8a5b8c03c0df1eb, type: 3}
+  m_Texture: {fileID: 2800000, guid: 219523a01ec8cc64a9dc409dd71cbc8f, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -3707,6 +3707,7 @@ MonoBehaviour:
   - {fileID: 2051694426877936591}
   - {fileID: 469997283666139230}
   - {fileID: 5835667767558946013}
+  canvas: {fileID: 0}
 --- !u!1 &8642383510779579612
 GameObject:
   m_ObjectHideFlags: 0

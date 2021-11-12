@@ -22,6 +22,9 @@ public class PUDoublePoints : PowerUp
 
     public override void Collect()
     {
-        throw new System.NotImplementedException();
+        if (!inUse)
+        {
+            Use();
+        }
     }
 }

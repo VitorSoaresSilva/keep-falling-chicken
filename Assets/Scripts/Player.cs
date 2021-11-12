@@ -37,8 +37,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount <= 0) return;
+        if (Application.platform == RuntimePlatform.Android) {
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                Debug.Log("Escape pressed");
+            }
+        }
         
+        if (Input.touchCount <= 0) return;
         Touch touch = Input.GetTouch(0);
         switch (touch.phase)
         {
@@ -58,7 +63,6 @@ public class Player : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
-
         if (!hasTouched) return;
         Vector2 swipeVector = finalTouch - initialTouch;
         if (swipeVector.magnitude < minMov) return;
