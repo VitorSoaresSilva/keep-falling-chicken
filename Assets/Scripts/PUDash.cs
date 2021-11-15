@@ -16,21 +16,21 @@ public class PUDash : PowerUp
            if (value < amountCoinsToDash)
            {
                currAmountCoinsToDash = value;
-               UIGame.Instance.dash.gameObject.SetActive(false);
+               // UIGame.Instance.dash.gameObject.SetActive(false);
            }
            else
            {
-               UIGame.Instance.dash.gameObject.SetActive(true);
+               //UIGame.Instance.dash.gameObject.SetActive(true);
                currAmountCoinsToDash = amountCoinsToDash;
            }
-           UIGame.Instance.dashSlider.value = (float)currAmountCoinsToDash / amountCoinsToDash;
+           //UIGame.Instance.dashSlider.value = (float)currAmountCoinsToDash / amountCoinsToDash;
        }
    }
 
    public override void Use()
     {
-        EnemiesManager.Instance.ChangeSpeed(DashSpeed);
-        UIGame.Instance.dash.gameObject.SetActive(false);
+        //EnemiesManager.Instance.ChangeSpeed(DashSpeed);
+        //UIGame.Instance.dash.gameObject.SetActive(false);
         inUse = true;
         StartCoroutine(nameof(Disable));
     }
@@ -39,8 +39,8 @@ public class PUDash : PowerUp
     {
         StopAllCoroutines();
         Dash = 0;
-        UIGame.Instance.dash.gameObject.SetActive(false);
-        UIGame.Instance.dashSlider.value = 0;
+        //UIGame.Instance.dash.gameObject.SetActive(false);
+        //UIGame.Instance.dashSlider.value = 0;
     }
 
     public override void Collect()
@@ -54,12 +54,12 @@ public class PUDash : PowerUp
         float currTime = 0;
         while (currTime < Value)
         {
-            UIGame.Instance.dashSlider.value = 1 - currTime / Value;
+            //UIGame.Instance.dashSlider.value = 1 - currTime / Value;
             currTime += Time.deltaTime;
             yield return null;
         }
-        UIGame.Instance.dashSlider.value = 0;
-        EnemiesManager.Instance.ChangeSpeed(GameManager.Instance.speedMovement);
+        //UIGame.Instance.dashSlider.value = 0;
+        //EnemiesManager.Instance.ChangeSpeed(GameManager.Instance.speedMovement);
         Dash = 0;
         inUse = false;
     }

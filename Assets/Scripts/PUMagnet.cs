@@ -17,7 +17,7 @@ public class PUMagnet : PowerUp
         magnetCollider.SetActive(false);
     }
 
-    public override void AfterDisable()
+    protected override void AfterDisable()
     {
         base.AfterDisable();
         magnetCollider.SetActive(false);

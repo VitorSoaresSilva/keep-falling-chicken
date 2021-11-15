@@ -11,6 +11,12 @@ public abstract class PowerUp: MonoBehaviour
     public bool inUse;
     // public 
     public abstract void Use();
+    public abstract void StartRun();
+    public bool CanUpgrade => level < costs.Length;
+    public string CostText => level < costs.Length ? costs[level].ToString() : "Level max";
+    public float Value => values[level];
+    public abstract void Collect();
+    public int Cost => level < costs.Length ? costs[level] : 0;
 
     public virtual IEnumerator Disable()
     {
@@ -23,18 +29,10 @@ public abstract class PowerUp: MonoBehaviour
         AfterDisable();
     }
 
-    public virtual void AfterDisable()
+    protected virtual void AfterDisable()
     {
         inUse = false;
     }
-    public abstract void StartRun();
-    public abstract void Collect();
-
-    public int Cost => level < costs.Length ? costs[level] : 0;
-    public string CostText => level < costs.Length ? costs[level].ToString() : "Level max";
-    public float Value => values[level];
-    public bool CanUpgrade => level < costs.Length;
-
     public void Init(PowerUpTypes type,int level)
     {
         this.level = level;
@@ -43,7 +41,6 @@ public abstract class PowerUp: MonoBehaviour
         values = PowerUpsManager.Values[(int)type];
         inUse = false;
     }
-
     public void Init(PowerUpTypes type) {
         costs = PowerUpsManager.CostValues[(int)type];
         values = PowerUpsManager.Values[(int)type];
@@ -51,23 +48,9 @@ public abstract class PowerUp: MonoBehaviour
         this.type = type;
         level = 0;
     }
-
     public void Upgrade()
     {
         level++;
     }
-    
-    /*
-     * class coletavel
-     * type poder
-     *
-     * shield
-     * double points
-     * magnet
-     *
-     * random shield
-     *
-     * peguei um shield
-     */
 }
 
