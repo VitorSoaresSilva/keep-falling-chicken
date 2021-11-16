@@ -20,6 +20,7 @@ public class RunManager : Singleton<RunManager>
     public UnityAction OnGameResume;
     public UnityAction<float> OnDistanceChange;
     public UnityEvent OnPlayerTakeDamage;
+    public UnityAction OnBossFightCloseToBegin;
     
 
 
@@ -28,6 +29,14 @@ public class RunManager : Singleton<RunManager>
     [SerializeField] private float[] hitsPunishment;
     [SerializeField] private int timesPlayerHits;
 
+    public enum State
+    {
+        LevelOne,
+        Boss,
+        LevelTwo
+    }
+
+    public State currentState;
     private void Start()
     {
         OnPlayerTakeDamage.AddListener(HandlePlayerHits);
@@ -42,9 +51,10 @@ public class RunManager : Singleton<RunManager>
     {
         runData = new RunData();
         isRunning = true;
+        currentState = State.LevelOne;
         scoreCoroutine = StartCoroutine(nameof(Score));
         timeCurrent = 0;
-OnGoldChanged?.Invoke(runData.gold);
+        OnGoldChanged?.Invoke(runData.gold);
     }
 
     public void RestartRun()
@@ -62,7 +72,8 @@ OnGoldChanged?.Invoke(runData.gold);
 
     public void PauseRun()
     {
-        
+        StopCoroutine(scoreCoroutine);
+        EnemiesManager.instance.StopEnemies();
     }
 
     public void CollectGold(int gold)
@@ -71,10 +82,10 @@ OnGoldChanged?.Invoke(runData.gold);
         OnGoldChanged?.Invoke(runData.gold);
     }
 
-    public void CollectDiamond(int diamond)
-    {
-        runData.diamond += diamond;
-    }
+    // public void CollectDiamond(int diamond)
+    // {
+    //     runData.diamond += diamond;
+    // }
     public RunData GetData()
     {
         return runData;
@@ -91,7 +102,7 @@ OnGoldChanged?.Invoke(runData.gold);
             if (timeCurrent >= timeBaseToBoss)
             {
                 Debug.Log("Boss fight!");
-                // EnemiesManager.instance.
+                OnBossFightCloseToBegin?.Invoke();
             }
             yield return new WaitForSeconds(1);
         }

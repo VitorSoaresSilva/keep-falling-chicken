@@ -10,6 +10,7 @@ public class SceneDataHolder : Singleton<SceneDataHolder>
     public Player player;
     public Transform playerTransform;
 
+    public Animator sceneAnimation;
 
 
 

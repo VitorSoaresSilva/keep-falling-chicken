@@ -20,8 +20,6 @@ public class LobbyState : BaseState
 
     private void PlayClicked()
     {
-        //TODO: verify if game content is already loaded
-        // RunManager.instance.StartRun();
         owner.ChangeState(new GameState(){startNewRun = true});
     }
 
@@ -35,7 +33,7 @@ public class LobbyState : BaseState
     }
     private void ConfigClicked()
     {
-        owner.ChangeState(new ConfigState<LobbyState>{ lastState = this});
+        owner.ChangeState(new ConfigState<LobbyState>());
     }
     private void StoreClicked()
     {

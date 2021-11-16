@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PauseState : BaseState
+public class PauseState<T> : BaseState where T: BaseState,new()
 {
+    // public T lastState;
     public bool resumeGame = true;
     public override void PrepareState()
     {
@@ -42,11 +43,11 @@ public class PauseState : BaseState
     private void ResumeClicked()
     {
         resumeGame = true;
-        owner.ChangeState(new GameState{startNewRun = false});
+        owner.ChangeState(new GameState());
     }
     private void ConfigClicked()
     {
         resumeGame = false;
-        owner.ChangeState(new ConfigState<PauseState>{ lastState = this});
+        owner.ChangeState(new ConfigState<PauseState<T>>());
     }
 }

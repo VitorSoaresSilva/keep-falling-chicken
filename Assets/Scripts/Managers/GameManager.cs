@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Events;
@@ -31,15 +32,16 @@ public class GameManager : PersistentSingleton<GameManager>
     public GameObject loadPanel;
     public Slider progressBar;
     public RawImage loadImage;
-    public Texture2D[] loadImages;
+    public Texture2D[] loadImagesNormal;
+    public Texture2D[] loadImagesBoss;
 
 
     [Header("Level")] 
-    public Enums.SceneIndexes lastScene = Enums.SceneIndexes.Manager;
-    public Enums.SceneIndexes nextScene = Enums.SceneIndexes.LevelOne;
+    // public
 
     #region Actions
     public UnityAction sceneLoaded;
+    public UnityAction sceneUnloaded;
     public UnityAction OnGoldChanged;
 
     
@@ -51,6 +53,7 @@ public class GameManager : PersistentSingleton<GameManager>
         SaveSystem.Load(Functions.GetSaveFileName(Enums.SaveGames.ConfigData), out ConfigData);
         PowerUpsManager.instance.PowerUpsInit(playerData.powerUpsLevels);
         PowerUpsManager.instance.onPowerUpChange += SavePlayerData;
+        // RunManager.instance.OnBossFightCloseToBegin += Han;
     }
 
     protected override void OnDestroy()
@@ -99,9 +102,7 @@ public class GameManager : PersistentSingleton<GameManager>
         SavePlayerData();
     }
     #endregion
-
-
-
+    
     #region AudioManager
         public void SetVolumes(bool save = true)
         {
@@ -121,11 +122,37 @@ public class GameManager : PersistentSingleton<GameManager>
     
     #region LoadScenes
 
+    public enum LoadImageType
+    {
+        Normal,
+        Boss,
+    }
+
+    public void SetStateLoadScene(bool value,LoadImageType loadImageType = LoadImageType.Normal)
+    {
+        if (!value)
+        {
+            loadPanel.SetActive(false);
+            return;
+        }
+        switch (loadImageType)
+        {
+            case LoadImageType.Normal:
+                loadImage.texture = loadImagesNormal[Random.Range(0,loadImagesNormal.Length-1)];
+                break;
+            case LoadImageType.Boss:
+                loadImage.texture = loadImagesBoss[Random.Range(0,loadImagesBoss.Length-1)];
+                break;
+            default:
+                loadImage.texture = loadImagesNormal[Random.Range(0,loadImagesNormal.Length-1)];
+                break;
+        }
+        loadPanel.SetActive(true);
+    }
+    
     private List<AsyncOperation> scenesLoading = new List<AsyncOperation>();
     public void LoadScenes(int[] scenes)
     {
-        loadImage.texture = loadImages[Random.Range(0,loadImages.Length-1)];
-        loadPanel.SetActive(true);
         foreach (var scene in scenes)
         {
             if (!SceneManager.GetSceneByBuildIndex(scene).isLoaded)
@@ -133,27 +160,59 @@ public class GameManager : PersistentSingleton<GameManager>
                 scenesLoading.Add(SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive));
             }
         }
-        StartCoroutine(GetSceneLoadProgress());
+        StartCoroutine(GetSceneLoadProgress(scenesLoading));
         StartCoroutine(GetTotalProgress());
     }
 
     private float totalSceneProgress;
     private float totalSpawnProgress;
-    private IEnumerator GetSceneLoadProgress()
+    private IEnumerator GetSceneLoadProgress(List<AsyncOperation> list)
     {
-        for (int i = 0; i < scenesLoading.Count; i++)
+        for (int i = 0; i < list.Count; i++)
         {
             while (!scenesLoading[i].isDone)
             {
                 totalSceneProgress = 0;
-                foreach (AsyncOperation operation in scenesLoading)
+                foreach (AsyncOperation operation in list)
                 {
                     totalSceneProgress += operation.progress;
                 }
-                totalSceneProgress = (totalSceneProgress / scenesLoading.Count) * 100f;
+                totalSceneProgress = (totalSceneProgress / list.Count) * 100f;
                 yield return null;
             }
         }
+    }
+    private IEnumerator GetSceneUnloadProgress(List<AsyncOperation> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            while (!scenesLoading[i].isDone)
+            {
+                totalSceneProgress = 0;
+                foreach (AsyncOperation operation in list)
+                {
+                    totalSceneProgress += operation.progress;
+                }
+                totalSceneProgress = (totalSceneProgress / list.Count) * 100f;
+                yield return null;
+            }
+        }
+        yield return new WaitForSeconds(0.5f);
+        sceneUnloaded?.Invoke();
+        loadPanel.SetActive(false);
+    }
+    private List<AsyncOperation> scenesUnloading = new List<AsyncOperation>();
+    public void UnloadAnotherScenes(int[] scenesToIgnore)
+    {
+        int temp = SceneManager.sceneCount;
+        for (int i = 0; i < temp; i++)
+        {
+            if (!scenesToIgnore.Contains(SceneManager.GetSceneAt(i).buildIndex))
+            {
+                scenesUnloading.Add(SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(i)));
+            }
+        }
+        StartCoroutine(GetSceneUnloadProgress(scenesUnloading));
     }
 
     private IEnumerator GetTotalProgress()
@@ -177,15 +236,9 @@ public class GameManager : PersistentSingleton<GameManager>
         loadPanel.SetActive(false);
     }
     #endregion
-
-
+    
     #region Cameras
-
-    // [Header("Cameras")] 
-    [SerializeField] private Camera menuCamera;
-    // [SerializeField] private Camera gameCamera;
-    // [SerializeField] private Camera SkyBoxCamera;
-
+    public Camera menuCamera;
     public void SetMenuCameraActive(bool value)
     {
         menuCamera.enabled = value; 

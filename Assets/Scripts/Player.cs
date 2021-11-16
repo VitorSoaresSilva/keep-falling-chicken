@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     private Vector2 smoothInputVelocity;
     private void Start()
     {
+        camera = SceneDataHolder.instance.mainCamera;
         right = camera.ViewportToWorldPoint(new Vector3(0, 0, camera.transform.position.z)).x;
     }
 
@@ -43,20 +44,18 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out CoinComponent coinComponent))
+        if (other.CompareTag("Obstacle"))
+        {
+            RunManager.instance.OnPlayerTakeDamage?.Invoke();
+        }else if (other.TryGetComponent(out CoinComponent coinComponent))
         {
             RunManager.instance.CollectGold(coinComponent.gold);
             //TODO: use a pool here
             Destroy(other.gameObject);
-            // coinComponent.MagnetActive(transform);
-        }else if (other.CompareTag("Obstacle"))
+        }else if (other.TryGetComponent(out PowerUpComponent powerUpComponent))
         {
-            RunManager.instance.OnPlayerTakeDamage?.Invoke();
+            
+            Destroy(other.gameObject);
         }
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        Debug.Log("COlision");
     }
 }

@@ -11,6 +11,7 @@ public class GameView : BaseView
     public TextMeshProUGUI goldText;
     public Slider SuzeteSlider;
     public Slider ZequinhaSlider;
+
     public void PauseClick()
     {
         OnPauseClicked?.Invoke();
@@ -34,5 +35,7 @@ public class GameView : BaseView
     {
         SuzeteSlider.value = value / 2;
     }
+
+    
 
 }
