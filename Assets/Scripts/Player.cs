@@ -20,18 +20,26 @@ public class Player : MonoBehaviour
 
     public GameObject shieldObject;
     public UnityEvent OnPlayerInivincibleHit;
+    public Joystick joystick;
     private void Start()
     {
         shieldObject.SetActive(false);
+        joystick = StateMachine.instance.UI.GameView.joystick;
         camera = SceneDataHolder.instance.mainCamera;
         right = camera.ViewportToWorldPoint(new Vector3(0, 0, camera.transform.position.z)).x;
     }
 
     void Update()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-        Vector2 input = new Vector2(horizontal, vertical);
+        // #if UNITY_EDITOR
+        //     float horizontal = Input.GetAxis("Horizontal");
+        //     float vertical = Input.GetAxis("Vertical");
+        // #else
+        //     Vector2 input 
+        // #endif
+        
+        
+        Vector2 input = new Vector2(joystick.Horizontal, joystick.Vertical);
         currentInputVector = Vector2.SmoothDamp(currentInputVector, input, ref smoothInputVelocity, smoothInputSpeed,1);
         Vector3 direction = new Vector3(currentInputVector.x, currentInputVector.y, 0f);
         Vector3 position = transform.position;

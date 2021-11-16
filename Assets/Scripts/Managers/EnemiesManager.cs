@@ -13,11 +13,11 @@ public class EnemiesManager : Singleton<EnemiesManager>
     [SerializeField] private float distanceBetweenSpawns = 10;
     [SerializeField] private Transform positionOutOfCamera; 
     [SerializeField] private Transform positionToSpawn;
-    [SerializeField] private GameObject ColliderToBoss;
     public float currSpeed { get; private set; }
 
-    private float scaleToX = 3;
-    private float scaleToY = 3;
+    // private float scale.x = 3;
+    // private float scale.y = 3;
+    public Vector3 scale;
     
     #region Initializition
         public float progress;
@@ -33,6 +33,7 @@ public class EnemiesManager : Singleton<EnemiesManager>
     [Header("Enemies pool")]
     [SerializeField] private int enemiesPoolIndex = 0;
     [SerializeField] private Transform[] enemiesPool;
+    [SerializeField] private EnemyMove[] enemiesPoolScript;
     [SerializeField] private GameObject[] assetsOfEnemiesToSpawn;
     private int nextEnemiesShuffle;
 
@@ -58,10 +59,11 @@ public class EnemiesManager : Singleton<EnemiesManager>
                 for (int k = 0; k < temp.transform.childCount; k++)
                 {
                     Transform childTransform = tempTransform.GetChild(k).transform;
-                    Vector3 scaleResult = Vector3.Scale(childTransform.localPosition, new Vector3(scaleToX,scaleToY,1));
+                    Vector3 scaleResult = Vector3.Scale(childTransform.localPosition, new Vector3(scale.x,scale.y,1));
                     childTransform.localPosition = scaleResult;
                 }
                 enemiesPool[i * amountEachEnemy + j] = tempTransform;
+                enemiesPoolScript[i * amountEachEnemy + j] = temp.GetComponent<EnemyMove>();
                 count++;
                 progress = (float)count / (float)enemiesPool.Length;
             }
@@ -75,8 +77,8 @@ public class EnemiesManager : Singleton<EnemiesManager>
     private void Start()
     {
         PowerUpsManager.instance.OnDashUsedChanged += HandleDashUsed;
-        ColliderToBoss.SetActive(false);
         enemiesPool = new Transform[amountEachEnemy * assetsOfEnemiesToSpawn.Length];
+        enemiesPoolScript = new EnemyMove[amountEachEnemy * assetsOfEnemiesToSpawn.Length];
         currSpeed = 0;
         InitializeSpawnPool();
         StartCoroutine(nameof(InitializePool));
@@ -161,12 +163,6 @@ public class EnemiesManager : Singleton<EnemiesManager>
         }
     }
 
-    public void SpawnColliderToBoss()
-    {
-        ColliderToBoss.SetActive(true);
-        ColliderToBoss.transform.position = positionToSpawn.position;
-    }
-
     private void SpawnGold()
     {
         GameObject temp = Instantiate(assetsOfGoldToSpawn[Random.Range(0,assetsOfGoldToSpawn.Length)], positionOutOfCamera.position, Quaternion.identity,transform);
@@ -174,7 +170,7 @@ public class EnemiesManager : Singleton<EnemiesManager>
         for (int k = 0; k < temp.transform.childCount; k++)
         {
             Transform childTransform = tempTransform.GetChild(k).transform;
-            Vector3 scaleResult = Vector3.Scale(childTransform.localPosition, new Vector3(scaleToX,scaleToY,1));
+            Vector3 scaleResult = Vector3.Scale(childTransform.localPosition, new Vector3(scale.x,scale.y,1));
             childTransform.localPosition = scaleResult;
         }
 
@@ -190,7 +186,10 @@ public class EnemiesManager : Singleton<EnemiesManager>
 
     private void MoveToPosition(int index)
     {
-        enemiesPool[index].position = positionToSpawn.position;
+        Vector3 direction = enemiesPoolScript[index]
+            .directionsToSpawn[Random.Range(0, enemiesPoolScript[index].directionsToSpawn.Length)];
+        
+        enemiesPool[index].position = positionToSpawn.position + Vector3.Scale(direction,scale);
     }
 
     private float TimeBetweenSpawn()

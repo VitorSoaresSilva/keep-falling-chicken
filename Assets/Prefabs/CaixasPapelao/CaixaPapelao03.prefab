@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8842480377101428293}
   - component: {fileID: 1196868060431096166}
   - component: {fileID: -7151353801427954663}
-  - component: {fileID: 7793479416362280805}
   m_Layer: 0
   m_Name: CaixaPapelao03
   m_TagString: Obstacle
@@ -96,17 +95,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.3976663, y: 0.7338075, z: 0.72279996}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7793479416362280805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6098199999487150334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59133bccc2897cd4db80e90197de4325, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  directionsToSpawn:
-  - {x: 0, y: 0, z: 0}

@@ -14,6 +14,7 @@ public class GameView : BaseView
     
     public Slider dashSlider;
     public Button buttonActiveDash;
+    public Joystick joystick;
 
     public void PauseClick()
     {

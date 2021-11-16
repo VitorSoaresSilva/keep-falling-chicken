@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 1520125507994591702}
   - component: {fileID: 6589237550331088390}
   - component: {fileID: 2307909088143444689}
-  - component: {fileID: -6594900288781790873}
-  - component: {fileID: -3619983660338084618}
   m_Layer: 0
   m_Name: Horizontal
   m_TagString: Obstacle
@@ -97,33 +95,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.46609557, y: 3.424282, z: 0.6095124}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!111 &-6594900288781790873
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2953551954410640874}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 0}
-  m_Animations:
-  - {fileID: 0}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
---- !u!114 &-3619983660338084618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2953551954410640874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59133bccc2897cd4db80e90197de4325, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  directionsToSpawn:
-  - {x: 0, y: 0, z: 0}

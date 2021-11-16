@@ -1,6 +1,7 @@
 using UnityEngine;
+using Utilities;
 
-public class StateMachine : MonoBehaviour
+public class StateMachine : Singleton<StateMachine>
 {
     private BaseState currentState;
 
