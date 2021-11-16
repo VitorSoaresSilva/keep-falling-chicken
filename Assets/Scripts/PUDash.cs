@@ -8,44 +8,33 @@ public class PUDash : PowerUp
    [SerializeField] private float DashSpeed = 25;
    [SerializeField] private int amountCoinsToDash = 20;
    private int currAmountCoinsToDash;
-   public int Dash
-   {
-       get => currAmountCoinsToDash;
-       set
-       {
-           if (value < amountCoinsToDash)
-           {
-               currAmountCoinsToDash = value;
-               // UIGame.Instance.dash.gameObject.SetActive(false);
-           }
-           else
-           {
-               //UIGame.Instance.dash.gameObject.SetActive(true);
-               currAmountCoinsToDash = amountCoinsToDash;
-           }
-           //UIGame.Instance.dashSlider.value = (float)currAmountCoinsToDash / amountCoinsToDash;
-       }
-   }
 
    public override void Use()
     {
-        //EnemiesManager.Instance.ChangeSpeed(DashSpeed);
-        //UIGame.Instance.dash.gameObject.SetActive(false);
+        PowerUpsManager.instance.OnDashCanBeUsedChanged?.Invoke(false);
+        PowerUpsManager.instance.OnDashUsedChanged?.Invoke(DashSpeed);
         inUse = true;
+        PowerUpsManager.instance.playerInvincible = true;
         StartCoroutine(nameof(Disable));
     }
 
    public override void StartRun()
     {
         StopAllCoroutines();
-        Dash = 0;
-        //UIGame.Instance.dash.gameObject.SetActive(false);
-        //UIGame.Instance.dashSlider.value = 0;
+        currAmountCoinsToDash = 0;
+        PowerUpsManager.instance.OnValueToDashChanged?.Invoke(0);
+        PowerUpsManager.instance.OnDashCanBeUsedChanged?.Invoke(false);
     }
 
     public override void Collect()
     {
-        Dash++;
+        currAmountCoinsToDash++;
+        if (currAmountCoinsToDash >= amountCoinsToDash)
+        {
+            //TODO active button
+            PowerUpsManager.instance.OnDashCanBeUsedChanged?.Invoke(true);
+        }
+        PowerUpsManager.instance.OnValueToDashChanged?.Invoke(Mathf.Clamp01((float)currAmountCoinsToDash / amountCoinsToDash));
     }
 
 
@@ -55,13 +44,18 @@ public class PUDash : PowerUp
         while (currTime < Value)
         {
             //UIGame.Instance.dashSlider.value = 1 - currTime / Value;
+            PowerUpsManager.instance.OnValueToDashChanged?.Invoke(Mathf.Clamp01(1 - currTime / Value));
             currTime += Time.deltaTime;
             yield return null;
         }
         //UIGame.Instance.dashSlider.value = 0;
         //EnemiesManager.Instance.ChangeSpeed(GameManager.Instance.speedMovement);
-        Dash = 0;
+        PowerUpsManager.instance.OnValueToDashChanged?.Invoke(0);
+        // PowerUpsManager.instance.OnDashCanBeUsedChanged?.Invoke(false);
+        PowerUpsManager.instance.OnDashUsedChanged?.Invoke(-DashSpeed);
+        currAmountCoinsToDash = 0;
         inUse = false;
+        PowerUpsManager.instance.playerInvincible = false;
     }
     
     

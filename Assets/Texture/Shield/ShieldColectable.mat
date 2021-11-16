@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shield
+  m_Name: ShieldColectable
   m_Shader: {fileID: -6465566751694194690, guid: 0e5cd54d10bf56345b9aea45dbfca572, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -40,7 +40,7 @@ Material:
     - Vector1_d0f96a82a4d143868e5deebe30ad0f1d: 2
     - Vector1_e6b3ab95b28f4665ae060350c5def814: 0.08
     m_Colors:
-    - Color_2f7ff7f382a84ee3b38b223e48b594c6: {r: 60.764683, g: 82.942184, b: 101.43396, a: 0}
-    - Color_62c73abe3b3c45d187b5114a5f4937d1: {r: 0, g: 0, b: 0, a: 0.48235294}
-    - Color_e43b157255f24f89bb64ca87c142e6a7: {r: 0, g: 0.3666185, b: 8.47419, a: 1}
+    - Color_2f7ff7f382a84ee3b38b223e48b594c6: {r: 58.729412, g: 78.807846, b: 95.87451, a: 0}
+    - Color_62c73abe3b3c45d187b5114a5f4937d1: {r: 0.0019908145, g: 0.0019908145, b: 0.0019908145, a: 0.5686275}
+    - Color_e43b157255f24f89bb64ca87c142e6a7: {r: 0, g: 0.39930737, b: 8.47419, a: 1}
   m_BuildTextureStacks: []

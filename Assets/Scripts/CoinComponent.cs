@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CoinComponent : MonoBehaviour
 {
-    public readonly int gold = 1;
+    public int gold = 1;
     public Transform playerTransform;
     public float maxDistanceMagnetMove;
 

@@ -74,6 +74,7 @@ public class EnemiesManager : Singleton<EnemiesManager>
 
     private void Start()
     {
+        PowerUpsManager.instance.OnDashUsedChanged += HandleDashUsed;
         ColliderToBoss.SetActive(false);
         enemiesPool = new Transform[amountEachEnemy * assetsOfEnemiesToSpawn.Length];
         currSpeed = 0;
@@ -81,6 +82,12 @@ public class EnemiesManager : Singleton<EnemiesManager>
         StartCoroutine(nameof(InitializePool));
         ActivateEnemies();
     }
+
+    private void HandleDashUsed(float arg0)
+    { 
+        currSpeed += arg0;
+    }
+
     public void InitializeSpawnPool()
     {
         int total = 0;
@@ -136,9 +143,9 @@ public class EnemiesManager : Singleton<EnemiesManager>
                     break;
                 case 2:
                     Debug.Log("Power up");
+                    SpawnPowerUps();
                     break;
                 case 3:
-                    Debug.Log("Gold");
                     SpawnGold();
                     break;
                 default:
@@ -176,7 +183,7 @@ public class EnemiesManager : Singleton<EnemiesManager>
 
     private void SpawnPowerUps()
     {
-        GameObject temp = Instantiate(assetsOfPowerUpToSpawn[Random.Range(0,assetsOfGoldToSpawn.Length)], positionOutOfCamera.position, Quaternion.identity,transform);
+        GameObject temp = Instantiate(assetsOfPowerUpToSpawn[Random.Range(0,assetsOfPowerUpToSpawn.Length)], positionOutOfCamera.position, Quaternion.identity,transform);
         Transform tempTransform = temp.transform;
         tempTransform.position = positionToSpawn.position;
     }
@@ -217,5 +224,10 @@ public class EnemiesManager : Singleton<EnemiesManager>
         }
         Shuffle(0,enemiesPool.Length,enemiesPool);
         ActivateEnemies();
+    }
+
+    public void Destroy(Transform t)
+    {
+        t.position = positionOutOfCamera.position;
     }
 }

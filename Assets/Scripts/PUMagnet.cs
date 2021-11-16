@@ -14,6 +14,7 @@ public class PUMagnet : PowerUp
 
     public override void StartRun()
     {
+        base.StartRun();
         magnetCollider.SetActive(false);
     }
 
@@ -21,13 +22,5 @@ public class PUMagnet : PowerUp
     {
         base.AfterDisable();
         magnetCollider.SetActive(false);
-    }
-
-    public override void Collect()
-    {
-        if (!inUse)
-        {
-            Use();
-        }
     }
 }

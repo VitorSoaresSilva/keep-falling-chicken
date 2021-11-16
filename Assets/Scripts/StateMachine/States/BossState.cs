@@ -9,13 +9,13 @@ public class BossState : BaseState
         base.PrepareState();
         GameManager.instance.SetStateLoadScene(false);
         owner.UI.BossView.OnPauseClicked += PauseClicked;
-        owner.UI.GameView.ShowView();
+        owner.UI.BossView.ShowView();
         
     }
 
     public override void DestroyState()
     {
-        owner.UI.GameView.HideView();
+        owner.UI.BossView.HideView();
         //TODO: verify if we need to destroy content ow if we destroy in gameState
         owner.UI.BossView.OnPauseClicked -= PauseClicked;
         base.DestroyState();

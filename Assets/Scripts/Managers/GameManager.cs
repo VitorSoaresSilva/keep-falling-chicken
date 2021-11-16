@@ -52,7 +52,7 @@ public class GameManager : PersistentSingleton<GameManager>
         SaveSystem.Load(Functions.GetSaveFileName(Enums.SaveGames.PlayerData), out _playerData);
         SaveSystem.Load(Functions.GetSaveFileName(Enums.SaveGames.ConfigData), out ConfigData);
         PowerUpsManager.instance.PowerUpsInit(playerData.powerUpsLevels);
-        PowerUpsManager.instance.onPowerUpChange += SavePlayerData;
+        PowerUpsManager.instance.onPowerUpLevelChange += SavePlayerData;
         // RunManager.instance.OnBossFightCloseToBegin += Han;
     }
 
@@ -60,7 +60,7 @@ public class GameManager : PersistentSingleton<GameManager>
     {
         if (PowerUpsManager.instanceExists)
         {
-            PowerUpsManager.instance.onPowerUpChange -= SavePlayerData;
+            PowerUpsManager.instance.onPowerUpLevelChange -= SavePlayerData;
         }
         base.OnDestroy();
     }
@@ -161,7 +161,7 @@ public class GameManager : PersistentSingleton<GameManager>
             }
         }
         StartCoroutine(GetSceneLoadProgress(scenesLoading));
-        StartCoroutine(GetTotalProgress());
+        StartCoroutine(GetTotalProgress(RunManager.instance.currentState == RunManager.State.Boss));
     }
 
     private float totalSceneProgress;
@@ -199,7 +199,7 @@ public class GameManager : PersistentSingleton<GameManager>
         }
         yield return new WaitForSeconds(0.5f);
         sceneUnloaded?.Invoke();
-        loadPanel.SetActive(false);
+        // loadPanel.SetActive(false);
     }
     private List<AsyncOperation> scenesUnloading = new List<AsyncOperation>();
     public void UnloadAnotherScenes(int[] scenesToIgnore)
@@ -215,21 +215,24 @@ public class GameManager : PersistentSingleton<GameManager>
         StartCoroutine(GetSceneUnloadProgress(scenesUnloading));
     }
 
-    private IEnumerator GetTotalProgress()
+    private IEnumerator GetTotalProgress(bool boss = false)
     {
-        while (EnemiesManager.instance == null || !EnemiesManager.instance.isDone)
+        if (!boss)
         {
-            if (EnemiesManager.instance == null)
+            while (EnemiesManager.instance == null || !EnemiesManager.instance.isDone)
             {
-                totalSpawnProgress = 0;
+                if (EnemiesManager.instance == null)
+                {
+                    totalSpawnProgress = 0;
+                }
+                else
+                {
+                    totalSpawnProgress = Mathf.Round(EnemiesManager.instance.progress * 100f);
+                }
+                float totalProgress = Mathf.Round((totalSceneProgress + totalSpawnProgress)/2);
+                progressBar.value = Mathf.RoundToInt(totalProgress);
+                yield return null;
             }
-            else
-            {
-                totalSpawnProgress = Mathf.Round(EnemiesManager.instance.progress * 100f);
-            }
-            float totalProgress = Mathf.Round((totalSceneProgress + totalSpawnProgress)/2);
-            progressBar.value = Mathf.RoundToInt(totalProgress);
-            yield return null;
         }
         yield return new WaitForSeconds(0.5f);
         sceneLoaded?.Invoke();

@@ -66,7 +66,10 @@ public class RunManager : Singleton<RunManager>
     public void StopRun()
     {
         StopCoroutine(scoreCoroutine);
-        EnemiesManager.instance.StopEnemies();
+        if (EnemiesManager.instanceExists)
+        {
+            EnemiesManager.instance.StopEnemies();
+        }
         GameManager.instance.EarnData(runData);
     }
 

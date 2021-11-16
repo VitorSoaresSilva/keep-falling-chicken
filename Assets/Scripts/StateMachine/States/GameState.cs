@@ -32,9 +32,14 @@ public class GameState : BaseState
         RunManager.instance.OnGoldChanged += owner.UI.GameView.UpdateGoldValue;
         RunManager.instance.OnDistanceChange += owner.UI.GameView.UpdateSlider;
         RunManager.instance.OnBossFightCloseToBegin += HandleBossScene;
+        PowerUpsManager.instance.OnValueToDashChanged += HandleValueToDash;
+        PowerUpsManager.instance.OnDashCanBeUsedChanged += HandleDashCanBeUsed;
+        // PowerUpsManager.instance.OnDashUsedChanged += HandleDashUsed;
+        
 
         if (startNewRun)
         {
+            RunManager.instance.currentState = RunManager.State.LevelOne;
             if (SceneManager.GetSceneByBuildIndex((int)Enums.SceneIndexes.LevelOne).isLoaded)
             {
                 RunManager.instance.RestartRun();
@@ -43,9 +48,8 @@ public class GameState : BaseState
             }
             else
             {
-                GameManager.instance.SetStateLoadScene(true,GameManager.LoadImageType.Normal);
-                GameManager.instance.LoadScenes(new []{(int)Enums.SceneIndexes.LevelOne});    
-                GameManager.instance.UnloadAnotherScenes(new []{(int)Enums.SceneIndexes.LevelOne,(int)Enums.SceneIndexes.Manager});
+                GameManager.instance.SetStateLoadScene(true);
+                GameManager.instance.UnloadAnotherScenes(new []{(int)Enums.SceneIndexes.Manager});    
             }
         }else
         {
@@ -70,8 +74,26 @@ public class GameState : BaseState
         RunManager.instance.OnGoldChanged -= owner.UI.GameView.UpdateGoldValue;
         RunManager.instance.OnDistanceChange -= owner.UI.GameView.UpdateSlider;
         RunManager.instance.OnBossFightCloseToBegin -= HandleBossScene;
+        PowerUpsManager.instance.OnValueToDashChanged -= HandleValueToDash;
+        PowerUpsManager.instance.OnDashCanBeUsedChanged -= HandleDashCanBeUsed;
+        // PowerUpsManager.instance.OnDashUsedChanged -= HandleDashUsed;
         GameManager.instance.SetMenuCameraActive(true);
         base.DestroyState();
+    }
+
+    private void HandleDashUsed(bool value)
+    {
+        // owner.UI.GameView.buttonActiveDash.interactable = !value;
+    }
+
+    private void HandleDashCanBeUsed(bool value)
+    {
+        owner.UI.GameView.buttonActiveDash.interactable = value;
+    }
+
+    private void HandleValueToDash(float value)
+    {
+        owner.UI.GameView.dashSlider.value = value;
     }
 
     private void PauseClicked()
@@ -118,10 +140,10 @@ public class GameState : BaseState
         switch (RunManager.instance.currentState)
         {
             case RunManager.State.LevelOne:
-                RunManager.instance.currentState = RunManager.State.Boss;
-                GameManager.instance.LoadScenes(new []{(int)Enums.SceneIndexes.Boss});
+                GameManager.instance.LoadScenes(new []{(int)Enums.SceneIndexes.LevelOne});
                 break;
             case RunManager.State.Boss:
+                GameManager.instance.LoadScenes(new []{(int)Enums.SceneIndexes.Boss});
                 
                 break;
             case RunManager.State.LevelTwo:

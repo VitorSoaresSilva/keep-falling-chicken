@@ -9,7 +9,7 @@ public class MagnetCollider : MonoBehaviour
     {
         if (other.TryGetComponent(out CoinComponent coinComponent))
         {
-            coinComponent.MagnetActive(GameManager.instance.playerTransform);
+            coinComponent.MagnetActive(SceneDataHolder.instance.playerTransform);
         }
     }
 }

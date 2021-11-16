@@ -18,15 +18,20 @@ public class PowerUpsManager : PersistentSingleton<PowerUpsManager>
 {
     public PowerUp[] powerUps;
     public int AmountPowerUps = (int)PowerUpTypes.COUNT;
-    public UnityAction onPowerUpChange;
-    private PUMagnet _puMagnet;
+    public UnityAction onPowerUpLevelChange;
+    // private PUMagnet _puMagnet;
+    public bool playerInvincible = false;
+    public UnityAction<float> OnValueToDashChanged;
+    public UnityAction<bool> OnDashCanBeUsedChanged;
+    public UnityAction<float> OnDashUsedChanged;
+    
     
     public void UpgradePowerUp(int index)// ui buttons
     {
         if (!powerUps[index].CanUpgrade) return;
         if (!GameManager.instance.TryToSpendMoney(powerUps[index].Cost)) return;
         powerUps[index].Upgrade();
-        onPowerUpChange?.Invoke();
+        onPowerUpLevelChange?.Invoke();
     }
 
     public void PowerUpsInit(int[] levels)
@@ -37,31 +42,33 @@ public class PowerUpsManager : PersistentSingleton<PowerUpsManager>
         {
             powerUps[i].Init((PowerUpTypes)i,levels[i]);
         }
-        onPowerUpChange?.Invoke();
+        onPowerUpLevelChange?.Invoke();
         // UIStore.Instance.UpdateLevels(levels);
         // UIStore.Instance.UpdateCosts(GetCostsText());
     }
 
     
 
-    public void UsePowerUp(int type)
+    public void Use(PowerUpTypes type)
     {
-        switch ((PowerUpTypes)type)
+        if (!powerUps[(int)type].inUse)
         {
-            case PowerUpTypes.dash:
-                if (!powerUps[type].inUse)
-                {
-                    powerUps[type].Use();
-                }
-                break;
-            case PowerUpTypes.magnet:
-                
-                break;
-            case PowerUpTypes.shield:
-                break;
-            case PowerUpTypes.doublePoints:
-                break;
-            
+            powerUps[(int)type].Use();
+        }
+    }
+
+    public void CollectPowerUp(PowerUpTypes type)
+    {
+        if (!powerUps[(int)type].inUse)
+        {
+            if (type == PowerUpTypes.dash)
+            {
+                powerUps[(int)type].Collect();
+            }
+            else
+            {
+                powerUps[(int)type].Use();
+            }
         }
     }
     

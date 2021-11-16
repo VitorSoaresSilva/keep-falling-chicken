@@ -10,7 +10,7 @@ public class StoreState : BaseState
         
         owner.UI.StoreView.OnLobbyClicked.AddListener(ClickLobby);
         owner.UI.StoreView.OnPlayClicked.AddListener(ClickPlay);
-        PowerUpsManager.instance.onPowerUpChange += owner.UI.StoreView.UpdateValues; 
+        PowerUpsManager.instance.onPowerUpLevelChange += owner.UI.StoreView.UpdateValues; 
         GameManager.instance.OnGoldChanged += owner.UI.StoreView.UpdateValues; 
         owner.UI.StoreView.UpdateValues();
         owner.UI.StoreView.ShowView();
@@ -21,7 +21,7 @@ public class StoreState : BaseState
         owner.UI.StoreView.HideView();
         owner.UI.StoreView.OnPlayClicked.RemoveListener(ClickPlay);
         owner.UI.StoreView.OnLobbyClicked.RemoveListener(ClickLobby);
-        PowerUpsManager.instance.onPowerUpChange -= owner.UI.StoreView.UpdateValues;
+        PowerUpsManager.instance.onPowerUpLevelChange -= owner.UI.StoreView.UpdateValues;
         GameManager.instance.OnGoldChanged -= owner.UI.StoreView.UpdateValues; 
         base.DestroyState();
     }

@@ -11,6 +11,9 @@ public class GameView : BaseView
     public TextMeshProUGUI goldText;
     public Slider SuzeteSlider;
     public Slider ZequinhaSlider;
+    
+    public Slider dashSlider;
+    public Button buttonActiveDash;
 
     public void PauseClick()
     {
@@ -35,6 +38,11 @@ public class GameView : BaseView
     {
         SuzeteSlider.value = value / 2;
     }
+
+    public void ClickDash()
+    {
+        PowerUpsManager.instance.powerUps[(int)PowerUpTypes.dash].Use();
+    } 
 
     
 

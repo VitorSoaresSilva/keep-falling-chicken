@@ -11,12 +11,12 @@ public abstract class PowerUp: MonoBehaviour
     public bool inUse;
     // public 
     public abstract void Use();
-    public abstract void StartRun();
     public bool CanUpgrade => level < costs.Length;
     public string CostText => level < costs.Length ? costs[level].ToString() : "Level max";
     public float Value => values[level];
-    public abstract void Collect();
     public int Cost => level < costs.Length ? costs[level] : 0;
+    public virtual void Collect(){}
+    public virtual void StartRun(){}
 
     public virtual IEnumerator Disable()
     {
