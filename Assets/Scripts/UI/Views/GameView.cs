@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameView : BaseView
 {
     public UnityAction OnPauseClicked;
-    public UnityAction OnFinishClicked;
+    public UnityAction OnPlayerLoses;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI goldText;
     public Slider SuzeteSlider;
@@ -23,7 +23,7 @@ public class GameView : BaseView
 
     public void FinishClick()
     {
-        OnFinishClicked?.Invoke();
+        OnPlayerLoses?.Invoke();
     }
 
     public void UpdateScoreValue(int value)

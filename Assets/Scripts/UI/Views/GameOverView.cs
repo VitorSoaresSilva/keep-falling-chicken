@@ -34,6 +34,5 @@ public class GameOverView : BaseView
         
         ScoreLabel.text = data.score.ToString().PadLeft(4,'0');
         GoldLabel.text = data.gold.ToString().PadLeft(4,'0');
-
     }
 }

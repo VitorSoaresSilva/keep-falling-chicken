@@ -31,7 +31,12 @@ public class UIRoot : MonoBehaviour
     [SerializeField] 
     private StoreView storeView;
     public StoreView StoreView => storeView;
+    
     [SerializeField] 
     private BossView bossView;
     public BossView BossView => bossView;
+    
+    [SerializeField] 
+    private WinView winView;
+    public WinView WinView => winView;
 }

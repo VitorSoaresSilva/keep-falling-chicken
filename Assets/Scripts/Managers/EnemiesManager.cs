@@ -14,14 +14,11 @@ public class EnemiesManager : Singleton<EnemiesManager>
     [SerializeField] private Transform positionOutOfCamera; 
     [SerializeField] private Transform positionToSpawn;
     public float currSpeed { get; private set; }
-
-    // private float scale.x = 3;
-    // private float scale.y = 3;
     public Vector3 scale;
     
     #region Initializition
-        public float progress;
-        public bool isDone;
+        [HideInInspector] public float progress;
+        [HideInInspector] public bool isDone;
     #endregion
     
     public int[] weightOfSpawnCategories;
@@ -31,13 +28,12 @@ public class EnemiesManager : Singleton<EnemiesManager>
     [SerializeField] private bool SpawnActive = true;
 
     [Header("Enemies pool")]
-    [SerializeField] private int enemiesPoolIndex = 0;
-    [SerializeField] private Transform[] enemiesPool;
-    [SerializeField] private EnemyMove[] enemiesPoolScript;
+    private int enemiesPoolIndex = 0;
+    private Transform[] enemiesPool;
+    private EnemyMove[] enemiesPoolScript;
     [SerializeField] private GameObject[] assetsOfEnemiesToSpawn;
     private int nextEnemiesShuffle;
 
-    
     [Header("Gold Spawn")]
     [SerializeField] private GameObject[] assetsOfGoldToSpawn;
     

@@ -93,16 +93,16 @@ public class PowerUpsManager : PersistentSingleton<PowerUpsManager>
 
     public static readonly int[][] CostValues =
     {
-        new[]{15,20,30,40,50,60,70,80,90}, // magnet
-        new[]{15,20,30,40,50,60,70,80,90}, // dash
-        new[]{15,20,30,40,50,60,70,80,90}, // shield
-        new[]{1,1,2,3,4,5,6,7,8}, // base
+        new[]{15,20,30,40,50,60}, // magnet
+        new[]{15,20,30,40,50,60}, // dash
+        new[]{15,20,30,40,50,60}, // shield
+        new[]{15,20,30,40,50,60}, // base
     };
     public static readonly float[][] Values =
     {
-        new float[]{5,6,7,8,9,10,11,12,13,14}, // magnet
-        new float[]{5,6,7,8,9,10,11,12,13,14}, // dash
-        new float[]{5,6,7,8,9,10,11,12,13,14}, // shield
-        new float[]{5,6,7,8,9,10,11,12,13,14}, // base
+        new float[]{5,6,7,8,9,10,11}, // magnet
+        new float[]{5,6,7,8,9,10,11}, // dash
+        new float[]{5,6,7,8,9,10,11}, // shield
+        new float[]{5,6,7,8,9,10,11}, // base
     };
 }

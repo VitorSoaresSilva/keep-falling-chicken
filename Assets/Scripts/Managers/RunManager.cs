@@ -21,10 +21,15 @@ public class RunManager : Singleton<RunManager>
     public UnityAction<float> OnDistanceChange;
     public UnityEvent OnPlayerTakeDamage;
     public UnityAction OnBossFightCloseToBegin;
+
+    public UnityAction OnPlayerLoses;
+    public UnityAction OnPlayerWin;
+    public UnityAction OnBossWin;
     
 
 
     public float timeBaseToBoss = 120;
+    public float timeBaseToWin = 120;
     public float timeCurrent;
     [SerializeField] private float[] hitsPunishment;
     [SerializeField] private int timesPlayerHits;
@@ -118,12 +123,44 @@ public class RunManager : Singleton<RunManager>
         if (timesPlayerHits > hitsPunishment.Length)
         {
             Debug.Log("Player dies");
+            OnPlayerLoses?.Invoke();
         }
         else
         {
             timeCurrent =Mathf.Clamp(hitsPunishment[timesPlayerHits - 1],0,timeBaseToBoss);
             OnDistanceChange?.Invoke(timeCurrent / timeBaseToBoss);
         }
+    }
+
+    public void StartFakeBoss()
+    {
+        StartCoroutine(nameof(FakeWinBossCoroutine));
+    }
+    IEnumerator FakeWinBossCoroutine()
+    {
+        yield return new WaitForSeconds(20);
+        OnBossWin?.Invoke();
+    }
+
+    public void StartNextLevel()
+    {
+        StartCoroutine(nameof(ScoreLevelTwo));
+    }
+    IEnumerator ScoreLevelTwo()
+    {
+        while (isRunning)
+        {
+            runData.score += 1;
+            OnScoreChanged?.Invoke(runData.score);
+            timeCurrent++;
+            OnDistanceChange?.Invoke(timeCurrent / timeBaseToWin);
+            if (timeCurrent >= timeBaseToWin)
+            {
+                OnPlayerWin?.Invoke();
+            }
+            yield return new WaitForSeconds(1);
+        }
+        yield return null;
     }
     
 }

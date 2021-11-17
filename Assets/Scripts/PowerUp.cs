@@ -12,7 +12,7 @@ public abstract class PowerUp: MonoBehaviour
     // public 
     public abstract void Use();
     public bool CanUpgrade => level < costs.Length;
-    public string CostText => level < costs.Length ? costs[level].ToString() : "Level max";
+    public string CostText => level < costs.Length ? costs[level].ToString() : "Max";
     public float Value => values[level];
     public int Cost => level < costs.Length ? costs[level] : 0;
     public virtual void Collect(){}

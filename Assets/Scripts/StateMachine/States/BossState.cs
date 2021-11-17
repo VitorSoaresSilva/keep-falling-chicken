@@ -8,16 +8,25 @@ public class BossState : BaseState
     {
         base.PrepareState();
         GameManager.instance.SetStateLoadScene(false);
-        owner.UI.BossView.OnPauseClicked += PauseClicked;
-        owner.UI.BossView.ShowView();
+        GameManager.instance.SetMenuCameraActive(false);
         
+        RunManager.instance.OnPlayerLoses += FinishClicked;
+        RunManager.instance.OnBossWin += HandleBossWin;
+        owner.UI.BossView.OnPauseClicked += PauseClicked;
+        
+        owner.UI.BossView.ShowView();
+        RunManager.instance.StartFakeBoss();
     }
 
     public override void DestroyState()
     {
         owner.UI.BossView.HideView();
         //TODO: verify if we need to destroy content ow if we destroy in gameState
+        
+        RunManager.instance.OnPlayerLoses -= FinishClicked;
+        RunManager.instance.OnBossWin -= HandleBossWin;
         owner.UI.BossView.OnPauseClicked -= PauseClicked;
+        
         base.DestroyState();
     }
 
@@ -29,5 +38,12 @@ public class BossState : BaseState
     private void FinishClicked()
     {
         owner.ChangeState(new GameOverState());
+    }
+
+    private void HandleBossWin()
+    {
+        RunManager.instance.currentState = RunManager.State.LevelTwo;
+        GameManager.instance.SetMenuCameraActive(true);
+        owner.ChangeState(new GameState(){nextLevel = true});
     }
 }

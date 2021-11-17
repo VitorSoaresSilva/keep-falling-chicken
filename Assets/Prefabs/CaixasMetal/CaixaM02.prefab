@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1589566265902131199}
   - component: {fileID: 3597163689777206069}
   - component: {fileID: 7894717339005238855}
-  - component: {fileID: 7536346706763045607}
   m_Layer: 0
   m_Name: CaixaM02
   m_TagString: Obstacle
@@ -96,16 +95,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.5398183, y: 1.0215843, z: 1.211922}
   m_Center: {x: -0.000000059604645, y: 0, z: 0}
---- !u!114 &7536346706763045607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3092650373495993056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59133bccc2897cd4db80e90197de4325, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  directionsToSpawn: []

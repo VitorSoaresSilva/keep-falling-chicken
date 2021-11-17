@@ -12,6 +12,7 @@ public class GameState : BaseState
     public bool destroyGameContent = true;
     public bool startNewRun = false;
     public bool skipToFinish = false;
+    public bool nextLevel = false;
 
     
     public override void PrepareState()
@@ -24,16 +25,18 @@ public class GameState : BaseState
             return;
         }
 
-        owner.UI.GameView.OnFinishClicked += FinishClicked;
         owner.UI.GameView.OnPauseClicked += PauseClicked;
         GameManager.instance.sceneLoaded += HandleSceneLoaded;
         GameManager.instance.sceneUnloaded += HandleSceneUnloaded;
+        RunManager.instance.OnPlayerLoses += FinishClicked;
         RunManager.instance.OnScoreChanged += owner.UI.GameView.UpdateScoreValue;
         RunManager.instance.OnGoldChanged += owner.UI.GameView.UpdateGoldValue;
         RunManager.instance.OnDistanceChange += owner.UI.GameView.UpdateSlider;
         RunManager.instance.OnBossFightCloseToBegin += HandleBossScene;
+        RunManager.instance.OnPlayerWin += HandlePlayerWin;
         PowerUpsManager.instance.OnValueToDashChanged += HandleValueToDash;
         PowerUpsManager.instance.OnDashCanBeUsedChanged += HandleDashCanBeUsed;
+        
         // PowerUpsManager.instance.OnDashUsedChanged += HandleDashUsed;
         
 
@@ -51,7 +54,12 @@ public class GameState : BaseState
                 GameManager.instance.SetStateLoadScene(true);
                 GameManager.instance.UnloadAnotherScenes(new []{(int)Enums.SceneIndexes.Manager});    
             }
-        }else
+        }else if (nextLevel)
+        {
+            GameManager.instance.SetStateLoadScene(true);
+            GameManager.instance.UnloadAnotherScenes(new []{(int)Enums.SceneIndexes.Manager});
+        }
+        else
         {
             GameManager.instance.SetMenuCameraActive(false);
             owner.UI.GameView.ShowView();
@@ -65,15 +73,17 @@ public class GameState : BaseState
         {
             GameManager.instance.UnloadAnotherScenes(new []{(int)Enums.SceneIndexes.Manager});
         }
-        
         owner.UI.GameView.HideView();
-        owner.UI.GameView.OnFinishClicked -= FinishClicked;
+        
         owner.UI.GameView.OnPauseClicked -= PauseClicked;
+        GameManager.instance.sceneUnloaded -= HandleSceneUnloaded;
         GameManager.instance.sceneLoaded -= HandleSceneLoaded;
+        RunManager.instance.OnPlayerLoses -= FinishClicked;
         RunManager.instance.OnScoreChanged -= owner.UI.GameView.UpdateScoreValue;
         RunManager.instance.OnGoldChanged -= owner.UI.GameView.UpdateGoldValue;
         RunManager.instance.OnDistanceChange -= owner.UI.GameView.UpdateSlider;
         RunManager.instance.OnBossFightCloseToBegin -= HandleBossScene;
+        RunManager.instance.OnPlayerWin -= HandlePlayerWin;
         PowerUpsManager.instance.OnValueToDashChanged -= HandleValueToDash;
         PowerUpsManager.instance.OnDashCanBeUsedChanged -= HandleDashCanBeUsed;
         // PowerUpsManager.instance.OnDashUsedChanged -= HandleDashUsed;
@@ -109,19 +119,20 @@ public class GameState : BaseState
 
     private void HandleSceneLoaded()
     {
+        GameManager.instance.SetMenuCameraActive(false);
         switch (RunManager.instance.currentState)
         {
             case RunManager.State.LevelOne:
-                GameManager.instance.SetMenuCameraActive(false);
                 RunManager.instance.StartRun();
                 owner.UI.GameView.ShowView();
                 break;
             case RunManager.State.Boss:
                 destroyGameContent = false;
-                GameManager.instance.SetMenuCameraActive(false);
                 owner.ChangeState(new BossState());
                 break;
             case RunManager.State.LevelTwo:
+                RunManager.instance.StartNextLevel();
+                owner.UI.GameView.ShowView();
                 break;
         }
     }
@@ -147,8 +158,14 @@ public class GameState : BaseState
                 
                 break;
             case RunManager.State.LevelTwo:
+                GameManager.instance.LoadScenes(new []{(int)Enums.SceneIndexes.LevelTwo});
                 break;
         }
+    }
+
+    private void HandlePlayerWin()
+    {
+        owner.ChangeState(new WinState());
     }
 
 }

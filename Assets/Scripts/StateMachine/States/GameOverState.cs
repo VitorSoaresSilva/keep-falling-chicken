@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GameOverState : BaseState
 {
-    public RunData gameResult;
-
     public override void PrepareState()
     {
         base.PrepareState();
@@ -13,7 +11,10 @@ public class GameOverState : BaseState
         owner.UI.GameOverView.OnMenuClicked += MenuClicked;
         owner.UI.GameOverView.OnReplayClicked += ReplayClicked;
         owner.UI.GameOverView.OnStoreClicked += StoreClicked;
+        
         owner.UI.GameOverView.data = RunManager.instance.GetData();;
+        GameManager.instance.EarnData(RunManager.instance.GetData());
+        
         owner.UI.GameOverView.UpdateValues();
         RunManager.instance.StopRun();
         owner.UI.GameOverView.ShowView();
@@ -41,8 +42,7 @@ public class GameOverState : BaseState
 
     private void MenuClicked()
     {
-        GameManager.instance.EarnData(RunManager.instance.runData);
-        // RunManager.instance.runData = new RunData();
+        
         owner.ChangeState(new LobbyState());
     }
 }

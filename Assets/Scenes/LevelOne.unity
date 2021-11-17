@@ -382,9 +382,6 @@ MonoBehaviour:
   isDone: 0
   weightOfSpawnCategories: 050000000100000001000000
   SpawnActive: 1
-  enemiesPoolIndex: 0
-  enemiesPool: []
-  enemiesPoolScript: []
   assetsOfEnemiesToSpawn:
   - {fileID: 760425124237589985, guid: a1ed7bac44bbe944fb349fbc08f4653a, type: 3}
   - {fileID: 2631919386372148383, guid: 2e695003bccc10e4cbcc3adc0fe23278, type: 3}
@@ -392,10 +389,11 @@ MonoBehaviour:
   - {fileID: 5532921035643347947, guid: 496927d090e72c243870a678eb9f0054, type: 3}
   - {fileID: 6204917737769001855, guid: 4f2366d6b0fda1f479c46162539ca295, type: 3}
   - {fileID: 5643983661173546610, guid: bf848806018dc4f48aa8052ce202be11, type: 3}
-  - {fileID: 3945156686805827188, guid: 1d90e59151a9ecd41be5f861b26da667, type: 3}
   - {fileID: 5595241030200832695, guid: 31a1a0e5ef4b72c47b4769b48208ae8e, type: 3}
+  - {fileID: 3945156686805827188, guid: 1d90e59151a9ecd41be5f861b26da667, type: 3}
   assetsOfGoldToSpawn:
-  - {fileID: 3299699787617271897, guid: 5e0054d6c1efdd144875c921e4081804, type: 3}
+  - {fileID: 5817673687752121802, guid: d7839ff0c6bd8e04db37f064c8f7e62f, type: 3}
+  - {fileID: 1617798953918890849, guid: 0ffabc810eb022d43a17e096fb799712, type: 3}
   assetsOfPowerUpToSpawn:
   - {fileID: 2753206107570487345, guid: c5910d5ad91a404429f8536c946a16f1, type: 3}
   - {fileID: 5252326449495365156, guid: 8ec6eb271964f744d930d4d67cb77e14, type: 3}
@@ -1084,7 +1082,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

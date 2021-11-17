@@ -244,8 +244,11 @@ public class GameManager : PersistentSingleton<GameManager>
     public Camera menuCamera;
     public void SetMenuCameraActive(bool value)
     {
-        menuCamera.enabled = value; 
-        SceneDataHolder.instance.ChangeSceneCamerasStatus(!value);
+        menuCamera.enabled = value;
+        if (SceneDataHolder.instanceExists)
+        {
+            SceneDataHolder.instance.ChangeSceneCamerasStatus(!value);
+        }
     }
 
     #endregion

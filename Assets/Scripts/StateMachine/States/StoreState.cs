@@ -33,6 +33,6 @@ public class StoreState : BaseState
 
     private void ClickPlay()
     {
-        owner.ChangeState(new GameState());
+        owner.ChangeState(new GameState(){startNewRun = true});
     }
 }

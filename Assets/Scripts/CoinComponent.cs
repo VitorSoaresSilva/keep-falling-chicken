@@ -20,7 +20,6 @@ public class CoinComponent : MonoBehaviour
         while (true)
         {
             transform.position = Vector3.MoveTowards(transform.position, playerTransform.position,maxDistanceMagnetMove);
-            Debug.Log("opa");
             yield return null;
         }
     }
