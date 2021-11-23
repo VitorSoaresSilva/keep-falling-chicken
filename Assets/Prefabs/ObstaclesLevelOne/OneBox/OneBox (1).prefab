@@ -54,6 +54,8 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 1, y: 1, z: 0}
   - {x: 1, y: -1, z: 0}
+  waypoints: []
+  currentPoint: -1
 --- !u!1001 &8649408639950080994
 PrefabInstance:
   m_ObjectHideFlags: 0

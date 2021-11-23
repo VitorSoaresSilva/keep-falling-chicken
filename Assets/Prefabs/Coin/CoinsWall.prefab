@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 916792956265526443}
-  - component: {fileID: 164508663619827659}
+  - component: {fileID: -5412098155012095796}
   m_Layer: 0
   m_Name: CoinsWall
   m_TagString: Obstacle
@@ -58,7 +58,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &164508663619827659
+--- !u!114 &-5412098155012095796
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5817673687752121802}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59133bccc2897cd4db80e90197de4325, type: 3}
+  m_Script: {fileID: 11500000, guid: f05205355d62aff4d97f63906e2432b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   directionsToSpawn:

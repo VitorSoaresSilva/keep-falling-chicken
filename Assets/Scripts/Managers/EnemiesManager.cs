@@ -12,7 +12,7 @@ public class EnemiesManager : Singleton<EnemiesManager>
     [SerializeField] private float baseSpeed;
     [SerializeField] private float distanceBetweenSpawns = 10;
     [SerializeField] private Transform positionOutOfCamera; 
-    [SerializeField] private Transform positionToSpawn;
+    [SerializeField] private Transform transformToSpawn;
     public float currSpeed { get; private set; }
     public Vector3 scale;
     
@@ -22,14 +22,14 @@ public class EnemiesManager : Singleton<EnemiesManager>
     #endregion
     
     public int[] weightOfSpawnCategories;
-    private int[] poolOfCategoriesToSpawns;
-    private int indexOfCategoriesToSpawn = 0;
+    [SerializeField] private int[] poolOfCategoriesToSpawns;
+    [SerializeField] private int indexOfCategoriesToSpawn = 0;
     private Coroutine spawnCoroutine;
     [SerializeField] private bool SpawnActive = true;
 
     [Header("Enemies pool")]
     private int enemiesPoolIndex = 0;
-    private Transform[] enemiesPool;
+    [SerializeField] private Transform[] enemiesPool;
     private EnemyMove[] enemiesPoolScript;
     [SerializeField] private GameObject[] assetsOfEnemiesToSpawn;
     private int nextEnemiesShuffle;
@@ -60,11 +60,12 @@ public class EnemiesManager : Singleton<EnemiesManager>
                 }
                 enemiesPool[i * amountEachEnemy + j] = tempTransform;
                 enemiesPoolScript[i * amountEachEnemy + j] = temp.GetComponent<EnemyMove>();
+                Initialize(i * amountEachEnemy + j);
                 count++;
                 progress = (float)count / (float)enemiesPool.Length;
             }
         }
-        Shuffle(0,enemiesPool.Length,enemiesPool);
+        Shuffle(0,enemiesPool.Length,ref enemiesPool);
         nextEnemiesShuffle = enemiesPool.Length - 1;
         yield return new WaitForSeconds(0.5f);
         isDone = true;
@@ -95,15 +96,15 @@ public class EnemiesManager : Singleton<EnemiesManager>
         }
         poolOfCategoriesToSpawns = new int[total];
         int index = 0;
-        for (int i = 0; i < total; i++)
+        for (int i = 0; i < weightOfSpawnCategories.Length; i++)
         {
             for (int j = 0; j < weightOfSpawnCategories[j]; j++)
             {
                 poolOfCategoriesToSpawns[index] = i;
-                index ++;
+                index++;
             }
         }
-        Shuffle(0,total,poolOfCategoriesToSpawns);
+        Shuffle(0,total,ref poolOfCategoriesToSpawns);
     }
     public void ActivateEnemies()
     {
@@ -128,27 +129,32 @@ public class EnemiesManager : Singleton<EnemiesManager>
             if(!SpawnActive) yield return null;
             if (nextEnemiesShuffle == 0)
             {
-                Shuffle(enemiesPoolIndex,GetUsable(enemiesPoolIndex),enemiesPool);
+                Shuffle(enemiesPoolIndex,GetUsable(enemiesPoolIndex),ref enemiesPool);
                 nextEnemiesShuffle = GetUsable(enemiesPoolIndex);
             }
 
             switch (poolOfCategoriesToSpawns[indexOfCategoriesToSpawn])
             {
-                case 1:
-                    nextEnemiesShuffle--;
-                    MoveToPosition(enemiesPoolIndex);
-                    enemiesPoolIndex = (enemiesPoolIndex + 1) % enemiesPool.Length;
+                case 0:
+                    if (enemiesPool[enemiesPoolIndex].position.z < -20)
+                    {
+                        nextEnemiesShuffle--;
+                        Initialize(enemiesPoolIndex);
+                        enemiesPoolScript[enemiesPoolIndex].Spawn();
+                        enemiesPoolIndex = (enemiesPoolIndex + 1) % enemiesPool.Length;
+                    }
                     break;
-                case 2:
+                case 1:
                     Debug.Log("Power up");
                     SpawnPowerUps();
                     break;
-                case 3:
+                case 2:
+                    Debug.Log("Gold");
                     SpawnGold();
                     break;
                 default:
                     nextEnemiesShuffle--;
-                    MoveToPosition(enemiesPoolIndex);
+                    Initialize(enemiesPoolIndex);
                     enemiesPoolIndex = (enemiesPoolIndex + 1) % enemiesPool.Length;
                     break;
             }
@@ -170,29 +176,49 @@ public class EnemiesManager : Singleton<EnemiesManager>
             childTransform.localPosition = scaleResult;
         }
 
-        tempTransform.position = positionToSpawn.position;
+        if (temp.TryGetComponent(out SimpleMove simpleMove))
+        {
+            tempTransform.position = Vector3.Scale(simpleMove.GetRandomDirection(), scale) + transformToSpawn.position;
+        }
+        else
+        {
+            tempTransform.position = transformToSpawn.position;
+        }
     }
 
     private void SpawnPowerUps()
     {
         GameObject temp = Instantiate(assetsOfPowerUpToSpawn[Random.Range(0,assetsOfPowerUpToSpawn.Length)], positionOutOfCamera.position, Quaternion.identity,transform);
         Transform tempTransform = temp.transform;
-        tempTransform.position = positionToSpawn.position;
+        if (temp.TryGetComponent(out SimpleMove simpleMove))
+        {
+            tempTransform.position = Vector3.Scale(simpleMove.GetRandomDirection(), scale) + transformToSpawn.position;
+        }
+        else
+        {
+            tempTransform.position = transformToSpawn.position;
+        }
     }
 
-    private void MoveToPosition(int index)
+    private void Initialize(int index)
     {
-        Vector3 direction = enemiesPoolScript[index]
-            .directionsToSpawn[Random.Range(0, enemiesPoolScript[index].directionsToSpawn.Length)];
+        Vector3[] positionsWaypoint = new Vector3[4];
+        float distance = transformToSpawn.position.z / 2;
+        for (int i = 0; i < positionsWaypoint.Length; i++)
+        {
+            Vector3 direction = enemiesPoolScript[index].GetRandomDirection();
+            Vector3 positionToSpawn = transformToSpawn.position;
+            positionsWaypoint[i] = positionToSpawn + Vector3.Scale(direction,scale);
+            positionsWaypoint[i].z = positionToSpawn.z - distance * i;
+        }
         
-        enemiesPool[index].position = positionToSpawn.position + Vector3.Scale(direction,scale);
+        enemiesPoolScript[index].Initialize(positionsWaypoint);
     }
-
     private float TimeBetweenSpawn()
     {
         return distanceBetweenSpawns / currSpeed;
     }
-    private void Shuffle<T>(int begin,int n,T[] array)
+    private void Shuffle<T>(int begin,int n,ref T[] array)
     {
         for (int i = 0; i < n; i++)
         {
@@ -208,6 +234,7 @@ public class EnemiesManager : Singleton<EnemiesManager>
     
     private void Swap<T>(ref T a,ref T b)
     {
+        Debug.Log(a);
         (a, b) = (b, a);
     }
 
@@ -217,7 +244,7 @@ public class EnemiesManager : Singleton<EnemiesManager>
         {
             enemiesPool[i].position = positionOutOfCamera.position;
         }
-        Shuffle(0,enemiesPool.Length,enemiesPool);
+        Shuffle(0,enemiesPool.Length,ref enemiesPool);
         ActivateEnemies();
     }
 

@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
         right = camera.ViewportToWorldPoint(new Vector3(0, 0, camera.transform.position.z)).x;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // #if UNITY_EDITOR
         //     float horizontal = Input.GetAxis("Horizontal");
@@ -40,41 +40,57 @@ public class Player : MonoBehaviour
         // #endif
         float horizontal;
         float vertical;
-        if (joystick.Horizontal > 0.1f)
+        if (Mathf.Abs(joystick.Horizontal) > 0.1f)
         {
-            horizontal = 1;
-        }
-        else if(joystick.Horizontal < -0.1f)
-        {
-            horizontal = -1;
+            horizontal = joystick.Horizontal;
         }
         else
         {
             horizontal = 0;
         }
-        if (joystick.Vertical > 0.1f)
+        if (Mathf.Abs(joystick.Vertical) > 0.1f)
         {
-            vertical = 1;
-        }
-        else if(joystick.Vertical < -0.1f)
-        {
-            vertical = -1;
+            vertical = joystick.Vertical;
         }
         else
         {
             vertical = 0;
         }
-        Vector2 input = new Vector2(horizontal, vertical);
-        currentInputVector = Vector2.SmoothDamp(currentInputVector, input, ref smoothInputVelocity, smoothInputSpeed,1);
-        Vector3 direction = new Vector3(currentInputVector.x, currentInputVector.y, 0f);
-        Vector3 position = transform.position;
-        position += direction * speedMultiplier * Time.deltaTime;
+        // if (joystick.Horizontal > 0.1f)
+        // {
+        //     horizontal = 1;
+        // }
+        // else if(joystick.Horizontal < -0.1f)
+        // {
+        //     horizontal = -1;
+        // }
+        // else
+        // {
+        //     horizontal = 0;
+        // }
+        // if (joystick.Vertical > 0.1f)
+        // {
+        //     vertical = 1;
+        // }
+        // else if(joystick.Vertical < -0.1f)
+        // {
+        //     vertical = -1;
+        // }
+        // else
+        // {
+        //     vertical = 0;
+        // }
+        Vector3 input = new Vector2(horizontal, vertical);
+        // currentInputVector = Vector2.SmoothDamp(currentInputVector, input, ref smoothInputVelocity, smoothInputSpeed,1);
+        // Vector3 direction = new Vector3(currentInputVector.x, currentInputVector.y, 0f);
+        // Vector3 position = transform.position;
+        // position += input * speedMultiplier * Time.deltaTime;
         
-        position = new Vector3(
-            Mathf.Clamp(position.x, -right, right),
-            Mathf.Clamp(position.y, -right, right),
-            position.z);
-        transform.position = position;
+        // position = new Vector3(
+        //     Mathf.Clamp(position.x, -right, right),
+        //     Mathf.Clamp(position.y, -right, right),
+        //     position.z);
+        transform.position  += input * speedMultiplier * Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -84,12 +100,12 @@ public class Player : MonoBehaviour
             if (PowerUpsManager.instance.playerInvincible)
             {
                 OnPlayerInivincibleHit?.Invoke();
-                EnemiesManager.instance.Destroy(other.transform);
             }
             else
             {
                 RunManager.instance.OnPlayerTakeDamage?.Invoke();
             }
+            EnemiesManager.instance.Destroy(other.transform);
         }else if (other.TryGetComponent(out CoinComponent coinComponent))
         {
             RunManager.instance.CollectGold(coinComponent.gold);
