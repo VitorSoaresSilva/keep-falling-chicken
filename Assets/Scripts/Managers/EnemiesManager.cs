@@ -65,7 +65,7 @@ public class EnemiesManager : Singleton<EnemiesManager>
                 progress = (float)count / (float)enemiesPool.Length;
             }
         }
-        Shuffle(0,enemiesPool.Length,ref enemiesPool);
+        Shuffle(0,enemiesPool.Length,ref enemiesPoolScript);
         nextEnemiesShuffle = enemiesPool.Length - 1;
         yield return new WaitForSeconds(0.5f);
         isDone = true;
@@ -119,7 +119,8 @@ public class EnemiesManager : Singleton<EnemiesManager>
 
     private int GetUsable(int index)
     {
-        return enemiesPool.Where((t, i) => enemiesPool[(i + index) % enemiesPool.Length].position.z < -20).Count();
+        
+        return enemiesPoolScript.Where((t, i) => enemiesPoolScript[(i + index) % enemiesPoolScript.Length].transform.position.z < -20).Count();
     }
 
     private IEnumerator Spawn()
@@ -129,20 +130,21 @@ public class EnemiesManager : Singleton<EnemiesManager>
             if(!SpawnActive) yield return null;
             if (nextEnemiesShuffle == 0)
             {
-                Shuffle(enemiesPoolIndex,GetUsable(enemiesPoolIndex),ref enemiesPool);
+                Shuffle(enemiesPoolIndex,GetUsable(enemiesPoolIndex),ref enemiesPoolScript);
                 nextEnemiesShuffle = GetUsable(enemiesPoolIndex);
             }
 
             switch (poolOfCategoriesToSpawns[indexOfCategoriesToSpawn])
             {
                 case 0:
-                    if (enemiesPool[enemiesPoolIndex].position.z < -20)
-                    {
+                    // if (enemiesPool[enemiesPoolIndex].position.z < -20)
+                    // {
                         nextEnemiesShuffle--;
                         Initialize(enemiesPoolIndex);
                         enemiesPoolScript[enemiesPoolIndex].Spawn();
-                        enemiesPoolIndex = (enemiesPoolIndex + 1) % enemiesPool.Length;
-                    }
+                        // enemiesPoolScript[enemiesPoolIndex].transform.position
+                        enemiesPoolIndex = (enemiesPoolIndex + 1) % enemiesPoolScript.Length;
+                    // }
                     break;
                 case 1:
                     Debug.Log("Power up");
@@ -151,11 +153,6 @@ public class EnemiesManager : Singleton<EnemiesManager>
                 case 2:
                     Debug.Log("Gold");
                     SpawnGold();
-                    break;
-                default:
-                    nextEnemiesShuffle--;
-                    Initialize(enemiesPoolIndex);
-                    enemiesPoolIndex = (enemiesPoolIndex + 1) % enemiesPool.Length;
                     break;
             }
 
@@ -226,16 +223,17 @@ public class EnemiesManager : Singleton<EnemiesManager>
             int rand = (begin + Random.Range(0, n - 1)) % array.Length;
             if (index != rand)
             {
-                Swap(ref array[index], ref array[rand]);
+                Swap( array,index,  rand);
             }
         }
         
     }
     
-    private void Swap<T>(ref T a,ref T b)
+    private void Swap<T>(IList<T> array,int a, int b)
     {
-        Debug.Log(a);
-        (a, b) = (b, a);
+        T temp = array[a];
+        array[a] = array[b];
+        array[b] = temp;
     }
 
     public void Restart()
@@ -244,7 +242,7 @@ public class EnemiesManager : Singleton<EnemiesManager>
         {
             enemiesPool[i].position = positionOutOfCamera.position;
         }
-        Shuffle(0,enemiesPool.Length,ref enemiesPool);
+        Shuffle(0,enemiesPool.Length,ref enemiesPoolScript);
         ActivateEnemies();
     }
 
