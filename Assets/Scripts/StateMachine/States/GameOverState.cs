@@ -11,7 +11,7 @@ public class GameOverState : BaseState
         owner.UI.GameOverView.OnMenuClicked += MenuClicked;
         owner.UI.GameOverView.OnReplayClicked += ReplayClicked;
         owner.UI.GameOverView.OnStoreClicked += StoreClicked;
-        
+        Time.timeScale = 0;
         owner.UI.GameOverView.data = RunManager.instance.GetData();;
         GameManager.instance.EarnData(RunManager.instance.GetData());
         

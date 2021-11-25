@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1799578, g: 0.22531885, b: 0.306713, a: 1}
+  m_IndirectSpecularColor: {r: 0.24631473, g: 0.2821787, b: 0.3455814, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5268,6 +5268,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1227960725 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2929252285020697096, guid: aaa2c939c0359ac4dbce3f49e8b90252, type: 3}
+  m_PrefabInstance: {fileID: 1539620104}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1239839421
 GameObject:
   m_ObjectHideFlags: 0
@@ -5382,6 +5387,7 @@ MonoBehaviour:
   dashSlider: {fileID: 0}
   buttonActiveDash: {fileID: 0}
   joystick: {fileID: 0}
+  handleJoystick: {fileID: 0}
 --- !u!114 &1253918032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14068,6 +14074,7 @@ MonoBehaviour:
   dashSlider: {fileID: 1972708199}
   buttonActiveDash: {fileID: 246950185}
   joystick: {fileID: 1933529740}
+  handleJoystick: {fileID: 1227960725}
 --- !u!1 &5540333922855312965
 GameObject:
   m_ObjectHideFlags: 0

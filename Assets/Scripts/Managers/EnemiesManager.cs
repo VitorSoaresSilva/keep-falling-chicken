@@ -39,10 +39,16 @@ public class EnemiesManager : Singleton<EnemiesManager>
     
     [Header("Power Up Spawn")]
     [SerializeField] private GameObject[] assetsOfPowerUpToSpawn;
-    
 
+    private GameObject parentOfConsumables;
 
-    
+    protected override void Awake()
+    {
+        base.Awake();
+        parentOfConsumables =
+            Instantiate(new GameObject("ConsumablesParent"), Vector3.zero, Quaternion.identity, transform);
+    }
+
     IEnumerator InitializePool()
     {
         int count = 0;
@@ -162,9 +168,17 @@ public class EnemiesManager : Singleton<EnemiesManager>
         }
     }
 
+    private void DestroyConsumables()
+    {
+        foreach(Transform child in parentOfConsumables.transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
     private void SpawnGold()
     {
-        GameObject temp = Instantiate(assetsOfGoldToSpawn[Random.Range(0,assetsOfGoldToSpawn.Length)], positionOutOfCamera.position, Quaternion.identity,transform);
+        GameObject temp = Instantiate(assetsOfGoldToSpawn[Random.Range(0,assetsOfGoldToSpawn.Length)], positionOutOfCamera.position, Quaternion.identity,parentOfConsumables.transform);
         Transform tempTransform = temp.transform;
         for (int k = 0; k < temp.transform.childCount; k++)
         {
@@ -185,7 +199,7 @@ public class EnemiesManager : Singleton<EnemiesManager>
 
     private void SpawnPowerUps()
     {
-        GameObject temp = Instantiate(assetsOfPowerUpToSpawn[Random.Range(0,assetsOfPowerUpToSpawn.Length)], positionOutOfCamera.position, Quaternion.identity,transform);
+        GameObject temp = Instantiate(assetsOfPowerUpToSpawn[Random.Range(0,assetsOfPowerUpToSpawn.Length)], positionOutOfCamera.position, Quaternion.identity,parentOfConsumables.transform);
         Transform tempTransform = temp.transform;
         if (temp.TryGetComponent(out SimpleMove simpleMove))
         {
@@ -243,6 +257,7 @@ public class EnemiesManager : Singleton<EnemiesManager>
             enemiesPool[i].position = positionOutOfCamera.position;
         }
         Shuffle(0,enemiesPool.Length,ref enemiesPoolScript);
+        DestroyConsumables();
         ActivateEnemies();
     }
 

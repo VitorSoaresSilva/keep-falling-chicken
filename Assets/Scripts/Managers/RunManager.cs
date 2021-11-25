@@ -66,6 +66,8 @@ public class RunManager : Singleton<RunManager>
     {
         StartRun();
         EnemiesManager.instance.Restart();
+        timeCurrent = 0;
+        timesPlayerHits = 0;
     }
 
     public void StopRun()

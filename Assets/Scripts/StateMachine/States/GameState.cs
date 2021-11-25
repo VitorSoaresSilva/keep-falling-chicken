@@ -18,7 +18,7 @@ public class GameState : BaseState
     public override void PrepareState()
     {
         base.PrepareState();
-
+        owner.UI.GameView.handleJoystick.localPosition = Vector3.zero;
         if (skipToFinish)
         {
             owner.ChangeState(new GameOverState()); // TODO: pass here the game result
@@ -74,6 +74,7 @@ public class GameState : BaseState
             GameManager.instance.UnloadAnotherScenes(new []{(int)Enums.SceneIndexes.Manager});
         }
         owner.UI.GameView.HideView();
+        owner.UI.GameView.handleJoystick.localPosition = Vector3.zero;
         
         owner.UI.GameView.OnPauseClicked -= PauseClicked;
         GameManager.instance.sceneUnloaded -= HandleSceneUnloaded;
@@ -87,7 +88,7 @@ public class GameState : BaseState
         PowerUpsManager.instance.OnValueToDashChanged -= HandleValueToDash;
         PowerUpsManager.instance.OnDashCanBeUsedChanged -= HandleDashCanBeUsed;
         // PowerUpsManager.instance.OnDashUsedChanged -= HandleDashUsed;
-        GameManager.instance.SetMenuCameraActive(true);
+        // GameManager.instance.SetMenuCameraActive(true);
         base.DestroyState();
     }
 
@@ -114,6 +115,7 @@ public class GameState : BaseState
 
     private void FinishClicked()
     {
+        destroyGameContent = false;
         owner.ChangeState(new GameOverState());
     }
 
