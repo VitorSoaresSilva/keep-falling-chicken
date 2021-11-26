@@ -21,6 +21,7 @@ public class GameState : BaseState
         owner.UI.GameView.handleJoystick.localPosition = Vector3.zero;
         if (skipToFinish)
         {
+            destroyGameContent = false;
             owner.ChangeState(new GameOverState()); // TODO: pass here the game result
             return;
         }
