@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 6818845191999372112}
   - component: {fileID: 6818845191999372115}
   - component: {fileID: 6818845191999372114}
+  - component: {fileID: 8843183990673458008}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -144,6 +145,24 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8843183990673458008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6818845191999372117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c53be73759e59442bbc4bbee43bbbd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnExitClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  effectsVolume: {fileID: 6818845193154278007}
+  musicVolume: {fileID: 6818845193114749470}
+  AudioMixer: {fileID: 24100000, guid: 88a926d18f8daa045aeaa9046253169c, type: 2}
 --- !u!1 &6818845192016604210
 GameObject:
   m_ObjectHideFlags: 0
