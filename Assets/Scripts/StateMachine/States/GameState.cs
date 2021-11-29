@@ -170,6 +170,7 @@ public class GameState : BaseState
 
     private void HandlePlayerWin()
     {
+        destroyGameContent = false;
         owner.ChangeState(new WinState());
     }
 
