@@ -55,6 +55,8 @@ public class PUDash : PowerUp
         PowerUpsManager.instance.OnDashUsedChanged?.Invoke(-DashSpeed);
         currAmountCoinsToDash = 0;
         inUse = false;
+        RunManager.instance.HandlePlayerUsesDash();
+        //TODO: active a collider to kill the near boxes
         PowerUpsManager.instance.playerInvincible = false;
     }
     

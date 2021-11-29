@@ -19,6 +19,7 @@ public class RunManager : Singleton<RunManager>
     public UnityAction OnGamePaused;
     public UnityAction OnGameResume;
     public UnityAction<float> OnDistanceChange;
+    public UnityAction<float> OnDistanceTargetChange;
     public UnityEvent OnPlayerTakeDamage;
     public UnityAction OnBossFightCloseToBegin;
 
@@ -59,6 +60,8 @@ public class RunManager : Singleton<RunManager>
         currentState = State.LevelOne;
         scoreCoroutine = StartCoroutine(nameof(Score));
         timeCurrent = 0;
+        OnDistanceTargetChange.Invoke(-1);
+        OnDistanceTargetChange.Invoke(0.6f);
         OnGoldChanged?.Invoke(runData.gold);
     }
 
@@ -125,23 +128,24 @@ public class RunManager : Singleton<RunManager>
         if (timesPlayerHits > hitsPunishment.Length)
         {
             Debug.Log("Player dies");
-            OnPlayerLoses?.Invoke();
+            // OnDistanceTargetChange?.Invoke( hitsPunishment[timesPlayerHits - 1]);
+            Invoke(nameof(PlayerLosesCall),1);
         }
         else
         {
-            timeCurrent =Mathf.Clamp(hitsPunishment[timesPlayerHits - 1],0,timeBaseToBoss);
-            OnDistanceChange?.Invoke(timeCurrent / timeBaseToBoss);
+            OnDistanceTargetChange?.Invoke( hitsPunishment[timesPlayerHits - 1]);
         }
     }
 
-    public void StartFakeBoss()
+    public void HandlePlayerUsesDash()
     {
-        StartCoroutine(nameof(FakeWinBossCoroutine));
+        timesPlayerHits--;
+        OnDistanceTargetChange?.Invoke( -hitsPunishment[timesPlayerHits - 1]);
     }
-    IEnumerator FakeWinBossCoroutine()
+
+    private void PlayerLosesCall()
     {
-        yield return new WaitForSeconds(20);
-        OnBossWin?.Invoke();
+        OnPlayerLoses?.Invoke();
     }
 
     public void StartNextLevel()

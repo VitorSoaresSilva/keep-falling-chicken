@@ -40,6 +40,10 @@ public class GameView : BaseView
     {
         SuzeteSlider.value = value / 2;
     }
+    public void UpdateSliderTarget(float value)
+    {
+        ZequinhaSlider.value += value;
+    }
 
     public void ClickDash()
     {

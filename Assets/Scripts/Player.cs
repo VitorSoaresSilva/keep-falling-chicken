@@ -24,7 +24,15 @@ public class Player : MonoBehaviour
     private void Start()
     {
         shieldObject.SetActive(false);
-        joystick = StateMachine.instance.UI.GameView.joystick;
+        if (RunManager.instance.currentState == RunManager.State.Boss)
+        {
+            joystick = StateMachine.instance.UI.BossView.joystick;
+            joystick.AxisOptions = AxisOptions.Horizontal;
+        }
+        else
+        {
+            joystick = StateMachine.instance.UI.GameView.joystick;
+        }
         
         camera = SceneDataHolder.instance.mainCamera;
         right = camera.ViewportToWorldPoint(new Vector3(0, 0, camera.transform.position.z)).x;
@@ -32,12 +40,6 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        // #if UNITY_EDITOR
-        //     float horizontal = Input.GetAxis("Horizontal");
-        //     float vertical = Input.GetAxis("Vertical");
-        // #else
-        //     Vector2 input 
-        // #endif
         float horizontal;
         float vertical;
         if (Mathf.Abs(joystick.Horizontal) > 0.1f)
@@ -56,40 +58,7 @@ public class Player : MonoBehaviour
         {
             vertical = 0;
         }
-        // if (joystick.Horizontal > 0.1f)
-        // {
-        //     horizontal = 1;
-        // }
-        // else if(joystick.Horizontal < -0.1f)
-        // {
-        //     horizontal = -1;
-        // }
-        // else
-        // {
-        //     horizontal = 0;
-        // }
-        // if (joystick.Vertical > 0.1f)
-        // {
-        //     vertical = 1;
-        // }
-        // else if(joystick.Vertical < -0.1f)
-        // {
-        //     vertical = -1;
-        // }
-        // else
-        // {
-        //     vertical = 0;
-        // }
         Vector3 input = new Vector2(horizontal, vertical);
-        // currentInputVector = Vector2.SmoothDamp(currentInputVector, input, ref smoothInputVelocity, smoothInputSpeed,1);
-        // Vector3 direction = new Vector3(currentInputVector.x, currentInputVector.y, 0f);
-        // Vector3 position = transform.position;
-        // position += input * speedMultiplier * Time.deltaTime;
-        
-        // position = new Vector3(
-        //     Mathf.Clamp(position.x, -right, right),
-        //     Mathf.Clamp(position.y, -right, right),
-        //     position.z);
         transform.position  += input * speedMultiplier * Time.deltaTime;
     }
 

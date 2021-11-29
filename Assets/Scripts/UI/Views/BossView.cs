@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class BossView : BaseView
 {
-    
+    public Joystick joystick;
     public UnityAction OnPauseClicked;
     
     public void ClickPause()

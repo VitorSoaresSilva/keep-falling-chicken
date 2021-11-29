@@ -51,6 +51,7 @@ public class GameManager : PersistentSingleton<GameManager>
     {
         SaveSystem.Load(Functions.GetSaveFileName(Enums.SaveGames.PlayerData), out _playerData);
         SaveSystem.Load(Functions.GetSaveFileName(Enums.SaveGames.ConfigData), out ConfigData);
+        SetVolumes(false);
         PowerUpsManager.instance.PowerUpsInit(playerData.powerUpsLevels);
         PowerUpsManager.instance.onPowerUpLevelChange += SavePlayerData;
         // RunManager.instance.OnBossFightCloseToBegin += Han;

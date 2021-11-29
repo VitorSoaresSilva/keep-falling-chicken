@@ -17,6 +17,6 @@ public class SceneDataHolder : Singleton<SceneDataHolder>
     public void ChangeSceneCamerasStatus(bool value)
     {
         mainCamera.enabled = value;
-        skyBoxCamera.enabled = value;
+        // skyBoxCamera.enabled = value;
     }
 }

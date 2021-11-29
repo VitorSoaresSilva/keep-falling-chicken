@@ -15,7 +15,7 @@ public class BossState : BaseState
         owner.UI.BossView.OnPauseClicked += PauseClicked;
         
         owner.UI.BossView.ShowView();
-        RunManager.instance.StartFakeBoss();
+        // RunManager.instance.StartFakeBoss();
     }
 
     public override void DestroyState()

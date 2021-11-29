@@ -33,6 +33,7 @@ public class GameState : BaseState
         RunManager.instance.OnScoreChanged += owner.UI.GameView.UpdateScoreValue;
         RunManager.instance.OnGoldChanged += owner.UI.GameView.UpdateGoldValue;
         RunManager.instance.OnDistanceChange += owner.UI.GameView.UpdateSlider;
+        RunManager.instance.OnDistanceTargetChange += owner.UI.GameView.UpdateSliderTarget;
         RunManager.instance.OnBossFightCloseToBegin += HandleBossScene;
         RunManager.instance.OnPlayerWin += HandlePlayerWin;
         PowerUpsManager.instance.OnValueToDashChanged += HandleValueToDash;
@@ -84,6 +85,7 @@ public class GameState : BaseState
         RunManager.instance.OnScoreChanged -= owner.UI.GameView.UpdateScoreValue;
         RunManager.instance.OnGoldChanged -= owner.UI.GameView.UpdateGoldValue;
         RunManager.instance.OnDistanceChange -= owner.UI.GameView.UpdateSlider;
+        RunManager.instance.OnDistanceTargetChange -= owner.UI.GameView.UpdateSliderTarget;
         RunManager.instance.OnBossFightCloseToBegin -= HandleBossScene;
         RunManager.instance.OnPlayerWin -= HandlePlayerWin;
         PowerUpsManager.instance.OnValueToDashChanged -= HandleValueToDash;
