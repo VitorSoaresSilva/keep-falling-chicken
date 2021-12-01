@@ -8,7 +8,7 @@ public class WinState : BaseState
     public override void PrepareState()
     {
         base.PrepareState();
-
+        Time.timeScale = 0;
         owner.UI.WinView.OnMenuClicked += MenuClicked;
         owner.UI.WinView.OnReplayClicked += ReplayClicked;
         owner.UI.WinView.OnStoreClicked += StoreClicked;

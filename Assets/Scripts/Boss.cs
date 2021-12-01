@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,15 +10,16 @@ public class Boss : MonoBehaviour
     private int attacks;
     private bool isMoving;
     private Vector3 targetMoving;
+    private Vector3 lastTarget;
     [SerializeField] private int maxAttacks = 3;
     [SerializeField] private float maxDistanceMoving;
+    [SerializeField] private float maxDistanceSides = 3;
     [SerializeField] private Animator animator;
-
+    [SerializeField] private GameObject effect;
     private Vector3 initialPosition;
     void Update()
     {
         if (!isMoving) return;
-        
         transform.position = Vector3.MoveTowards(transform.position, targetMoving, maxDistanceMoving * Time.deltaTime);
         if (Vector3.Distance(transform.position, targetMoving) < 0.01)
         {
@@ -29,6 +31,7 @@ public class Boss : MonoBehaviour
     public void Start()
     {
         initialPosition = transform.position;
+        lastTarget = initialPosition;
         Invoke(nameof(HandleAttacks),4);
     }
 
@@ -41,32 +44,40 @@ public class Boss : MonoBehaviour
         }
         else
         {
-            Debug.Log("Player Win");
+            // player wins
             if (RunManager.instanceExists)
             {
-                Invoke(nameof(PlayerWin),2);
+                Invoke(nameof(PlayerWin),1);
             }
         }
     }
     private void MoveSide()
     {
         int side = Random.Range(-1, 1);
-        targetMoving = initialPosition + Vector3.right * (side * 3);
+        targetMoving = initialPosition + Vector3.right * (side * maxDistanceSides);
+        while (targetMoving == lastTarget)
+        {
+            side = Random.Range(-1, 1);
+            targetMoving = initialPosition + Vector3.right * (side * maxDistanceSides);
+        }
+        lastTarget = targetMoving;
         isMoving = true;
     }
 
     public void FinishMovingBackward()
     {
-        HandleAttacks();
+        Invoke(nameof(HandleAttacks),1);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //TODO: spawn effect
-        Debug.Log("Acertei");
-        if (RunManager.instanceExists)
+        if (other.TryGetComponent(out Player player))
         {
-            Invoke(nameof(PlayerLoses),2);
+            Instantiate(effect, other.transform.position,Quaternion.identity);
+            if (RunManager.instanceExists)
+            {
+                Invoke(nameof(PlayerLoses),1);
+            }
         }
     }
     private void PlayerWin()
