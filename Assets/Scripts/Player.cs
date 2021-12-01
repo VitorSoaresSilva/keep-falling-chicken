@@ -21,6 +21,9 @@ public class Player : MonoBehaviour
     public GameObject shieldObject;
     public UnityEvent OnPlayerInivincibleHit;
     public Joystick joystick;
+
+    Animator animator;
+        
     private void Start()
     {
         shieldObject.SetActive(false);
@@ -36,6 +39,8 @@ public class Player : MonoBehaviour
         
         camera = SceneDataHolder.instance.mainCamera;
         right = camera.ViewportToWorldPoint(new Vector3(0, 0, camera.transform.position.z)).x;
+
+        animator = GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -73,6 +78,7 @@ public class Player : MonoBehaviour
             else
             {
                 RunManager.instance.OnPlayerTakeDamage?.Invoke();
+                animator.SetTrigger("Hit");
             }
             EnemiesManager.instance.Destroy(other.transform);
         }else if (other.TryGetComponent(out CoinComponent coinComponent))
