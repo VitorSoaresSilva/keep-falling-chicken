@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Obstacle
   - ZequinhaIsNear
+  - Geraldo
   layers:
   - Default
   - TransparentFX

@@ -566,7 +566,7 @@ GameObject:
   - component: {fileID: 2031909998}
   m_Layer: 0
   m_Name: Geraldo
-  m_TagString: Untagged
+  m_TagString: Geraldo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -768,7 +768,7 @@ GameObject:
   - component: {fileID: 1359712031}
   m_Layer: 0
   m_Name: Geraldo
-  m_TagString: Untagged
+  m_TagString: Geraldo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -820,10 +820,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f3fe4221ccd18489870691d85153b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAttacks: 3
-  maxDistanceMoving: 5
+  maxAttacks: 4
+  maxDistanceMoving: 4
+  maxDistanceSides: 2.5
   animator: {fileID: 7909185126295629333}
-  effect: {fileID: 2167228075590078972, guid: 70c26f3cc09215649871267c54374c20, type: 3}
+  effect: {fileID: 7174222011874541143, guid: 567a9df09920c9340a1c99b17743ecf9, type: 3}
 --- !u!54 &1359712031
 Rigidbody:
   m_ObjectHideFlags: 0

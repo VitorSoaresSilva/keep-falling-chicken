@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     private Vector2 smoothInputVelocity;
 
     public GameObject shieldObject;
+    public GameObject magnetObject;
     public UnityEvent OnPlayerInivincibleHit;
     public Joystick joystick;
 
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         shieldObject.SetActive(false);
+        magnetObject.SetActive(false);
         if (RunManager.instance.currentState == RunManager.State.Boss)
         {
             joystick = StateMachine.instance.UI.BossView.joystick;
@@ -99,6 +101,9 @@ public class Player : MonoBehaviour
         else if (other.CompareTag("ZequinhaIsNear"))
         {
             RunManager.instance.ZequinhaIsNear();
+        }else if (other.CompareTag("Geraldo"))
+        {
+            animator.SetTrigger("Hit");
         }
     }
 }
