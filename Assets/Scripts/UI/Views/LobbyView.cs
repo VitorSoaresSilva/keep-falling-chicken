@@ -12,6 +12,7 @@ public class LobbyView : BaseView
     public GameObject creditsPanel;
 
     public TextMeshProUGUI goldText;
+    public TextMeshProUGUI scoreText;
     public void ClickPlay()
     {
         OnPlayClicked?.Invoke();
@@ -29,6 +30,7 @@ public class LobbyView : BaseView
     public void UpdateValues()
     {
         goldText.text = GameManager.instance.playerData.gold.ToString();
+        scoreText.text = GameManager.instance.playerData.highScore.ToString();
     }
     public void Credits(bool value)
     {
