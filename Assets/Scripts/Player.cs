@@ -6,16 +6,8 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
-    // public float velMovimento;
-    public  float right;
-    [SerializeField] private Camera camera;
-    // public AnimationCurve speedCurve;
-
-    // public float time;
     public float speedMultiplier;
     private Vector2 smoothInput;
-    [SerializeField] private float smoothInputSpeed = .2f;
-    [SerializeField] private Vector2 currentInputVector;
     private Vector2 smoothInputVelocity;
 
     public GameObject shieldObject;
@@ -23,6 +15,7 @@ public class Player : MonoBehaviour
     public Joystick joystick;
 
     Animator animator;
+    [SerializeField] private GameObject effectDamage;
         
     private void Start()
     {
@@ -36,10 +29,6 @@ public class Player : MonoBehaviour
         {
             joystick = StateMachine.instance.UI.GameView.joystick;
         }
-        
-        camera = SceneDataHolder.instance.mainCamera;
-        right = camera.ViewportToWorldPoint(new Vector3(0, 0, camera.transform.position.z)).x;
-
         animator = GetComponent<Animator>();
     }
 
@@ -49,7 +38,14 @@ public class Player : MonoBehaviour
         float vertical;
         if (Mathf.Abs(joystick.Horizontal) > 0.1f)
         {
-            horizontal = joystick.Horizontal;
+            if (joystick.Horizontal > 0)
+            {
+                horizontal = 1;
+            }
+            else
+            {
+                horizontal = -1;
+            }
         }
         else
         {
@@ -57,7 +53,14 @@ public class Player : MonoBehaviour
         }
         if (Mathf.Abs(joystick.Vertical) > 0.1f)
         {
-            vertical = joystick.Vertical;
+            if (joystick.Vertical > 0)
+            {
+                vertical = 1;
+            }
+            else
+            {
+                vertical = -1;
+            }
         }
         else
         {
@@ -78,6 +81,7 @@ public class Player : MonoBehaviour
             else
             {
                 RunManager.instance.OnPlayerTakeDamage?.Invoke();
+                Instantiate(effectDamage,transform.position,Quaternion.identity,transform);
                 animator.SetTrigger("Hit");
             }
             EnemiesManager.instance.Destroy(other.transform);
@@ -91,6 +95,10 @@ public class Player : MonoBehaviour
         {
             PowerUpsManager.instance.CollectPowerUp(powerUpComponent.type);
             Destroy(other.gameObject);
+        }
+        else if (other.CompareTag("ZequinhaIsNear"))
+        {
+            RunManager.instance.ZequinhaIsNear();
         }
     }
 }

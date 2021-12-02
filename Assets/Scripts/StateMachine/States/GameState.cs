@@ -38,13 +38,11 @@ public class GameState : BaseState
         RunManager.instance.OnPlayerWin += HandlePlayerWin;
         PowerUpsManager.instance.OnValueToDashChanged += HandleValueToDash;
         PowerUpsManager.instance.OnDashCanBeUsedChanged += HandleDashCanBeUsed;
-        
-        // PowerUpsManager.instance.OnDashUsedChanged += HandleDashUsed;
-        
 
         if (startNewRun)
         {
             RunManager.instance.currentState = RunManager.State.LevelOne;
+            
             if (SceneManager.GetSceneByBuildIndex((int)Enums.SceneIndexes.LevelOne).isLoaded)
             {
                 RunManager.instance.RestartRun();
@@ -53,6 +51,7 @@ public class GameState : BaseState
             }
             else
             {
+                GameManager.instance.SetMenuCameraActive(true);
                 GameManager.instance.SetStateLoadScene(true);
                 GameManager.instance.UnloadAnotherScenes(new []{(int)Enums.SceneIndexes.Manager});    
             }
@@ -90,14 +89,7 @@ public class GameState : BaseState
         RunManager.instance.OnPlayerWin -= HandlePlayerWin;
         PowerUpsManager.instance.OnValueToDashChanged -= HandleValueToDash;
         PowerUpsManager.instance.OnDashCanBeUsedChanged -= HandleDashCanBeUsed;
-        // PowerUpsManager.instance.OnDashUsedChanged -= HandleDashUsed;
-        // GameManager.instance.SetMenuCameraActive(true);
         base.DestroyState();
-    }
-
-    private void HandleDashUsed(bool value)
-    {
-        // owner.UI.GameView.buttonActiveDash.interactable = !value;
     }
 
     private void HandleDashCanBeUsed(bool value)
@@ -160,7 +152,6 @@ public class GameState : BaseState
                 break;
             case RunManager.State.Boss:
                 GameManager.instance.LoadScenes(new []{(int)Enums.SceneIndexes.Boss});
-                
                 break;
             case RunManager.State.LevelTwo:
                 GameManager.instance.LoadScenes(new []{(int)Enums.SceneIndexes.LevelTwo});

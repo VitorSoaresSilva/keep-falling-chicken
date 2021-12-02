@@ -34,7 +34,6 @@ public class RunManager : Singleton<RunManager>
     public float timeCurrent;
     [SerializeField] private float[] hitsPunishment;
     [SerializeField] private int timesPlayerHits;
-
     public enum State
     {
         LevelOne,
@@ -55,14 +54,15 @@ public class RunManager : Singleton<RunManager>
 
     public void StartRun()
     {
+        Debug.Log("Start run");
         runData = new RunData();
-        isRunning = true;
         currentState = State.LevelOne;
-        scoreCoroutine = StartCoroutine(nameof(Score));
         timeCurrent = 0;
         OnDistanceTargetChange.Invoke(-1);
         OnDistanceTargetChange.Invoke(0.6f);
         OnGoldChanged?.Invoke(runData.gold);
+        isRunning = true;
+        scoreCoroutine = StartCoroutine(nameof(Score));
     }
 
     public void RestartRun()
@@ -162,11 +162,33 @@ public class RunManager : Singleton<RunManager>
             OnDistanceChange?.Invoke(timeCurrent / timeBaseToWin);
             if (timeCurrent >= timeBaseToWin)
             {
-                OnPlayerWin?.Invoke();
+                
+                SpawnZequinha();
             }
             yield return new WaitForSeconds(1);
         }
         yield return null;
     }
-    
+
+    public void ZequinhaCollected()
+    {
+        OnPlayerWin?.Invoke();
+    }
+
+    public void ZequinhaIsNear()
+    {
+        SceneDataHolder.instance.player.enabled = false;
+        StateMachine.instance.UI.GameView.HideView();
+        SceneDataHolder.instance.zequinha.GetComponent<SimpleMove>().enabled = false;
+        SceneDataHolder.instance.playerScriptWin.enabled = true;
+        
+    }
+
+    public void SpawnZequinha()
+    {
+        PauseRun();
+        SceneDataHolder.instance.zequinha.SetActive(true);
+    }
+
+
 }

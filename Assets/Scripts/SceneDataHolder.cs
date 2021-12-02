@@ -6,17 +6,14 @@ using Utilities;
 public class SceneDataHolder : Singleton<SceneDataHolder>
 {
     public Camera mainCamera;
-    public Camera skyBoxCamera;
     public Player player;
     public Transform playerTransform;
-
-    public Animator sceneAnimation;
-
-
+    public GameObject zequinha;
+    public PlayerWinScript playerScriptWin;
+    public GameObject parentOfConsumables;
 
     public void ChangeSceneCamerasStatus(bool value)
     {
         mainCamera.enabled = value;
-        // skyBoxCamera.enabled = value;
     }
 }

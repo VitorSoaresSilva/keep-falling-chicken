@@ -45,8 +45,9 @@ public class EnemiesManager : Singleton<EnemiesManager>
     protected override void Awake()
     {
         base.Awake();
-        parentOfConsumables =
-            Instantiate(new GameObject("ConsumablesParent"), Vector3.zero, Quaternion.identity, transform);
+        // parentOfConsumables =
+        //     Instantiate(new GameObject("ConsumablesParent"), Vector3.zero, Quaternion.identity, transform);
+        parentOfConsumables = SceneDataHolder.instance.parentOfConsumables;
     }
 
     IEnumerator InitializePool()
