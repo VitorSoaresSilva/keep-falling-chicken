@@ -9,6 +9,7 @@ public class LobbyView : BaseView
     public UnityEvent OnPlayClicked;
     public UnityEvent OnConfigClicked;
     public UnityEvent OnStoreClicked;
+    public GameObject creditsPanel;
 
     public TextMeshProUGUI goldText;
     public void ClickPlay()
@@ -28,5 +29,9 @@ public class LobbyView : BaseView
     public void UpdateValues()
     {
         goldText.text = GameManager.instance.playerData.gold.ToString();
+    }
+    public void Credits(bool value)
+    {
+        creditsPanel.SetActive(value);
     }
 }
