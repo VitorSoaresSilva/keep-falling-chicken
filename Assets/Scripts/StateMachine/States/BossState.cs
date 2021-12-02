@@ -15,6 +15,7 @@ public class BossState : BaseState
         owner.UI.BossView.OnPauseClicked += PauseClicked;
         
         owner.UI.BossView.ShowView();
+        owner.UI.BossView.animatorTutorial.SetTrigger("StartTutorial");
         // RunManager.instance.StartFakeBoss();
     }
 

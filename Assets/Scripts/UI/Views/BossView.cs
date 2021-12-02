@@ -7,6 +7,7 @@ public class BossView : BaseView
 {
     public Joystick joystick;
     public UnityAction OnPauseClicked;
+    public Animator animatorTutorial;
     
     public void ClickPause()
     {
