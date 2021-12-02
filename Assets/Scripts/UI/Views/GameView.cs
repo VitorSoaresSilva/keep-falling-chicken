@@ -16,7 +16,7 @@ public class GameView : BaseView
     public Button buttonActiveDash;
     public Joystick joystick;
     public RectTransform handleJoystick;
-
+    public GameObject doublePointsIcon;
     public void PauseClick()
     {
         OnPauseClicked?.Invoke();

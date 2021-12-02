@@ -7,24 +7,20 @@ public class PUDoublePoints : PowerUp
 
     public override void Use()
     {
-        throw new System.NotImplementedException();
+        RunManager.instance.isDoublePointActive = true;
+        StateMachine.instance.UI.GameView.doublePointsIcon.SetActive(true);
+        StartCoroutine(nameof(Disable));
     }
 
     protected override void AfterDisable()
     {
-        throw new System.NotImplementedException();
+        RunManager.instance.isDoublePointActive = false;
+        StateMachine.instance.UI.GameView.doublePointsIcon.SetActive(false);
     }
 
     public override void StartRun()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Collect()
-    {
-        if (!inUse)
-        {
-            Use();
-        }
+        RunManager.instance.isDoublePointActive = false;
+        StateMachine.instance.UI.GameView.doublePointsIcon.SetActive(false);
     }
 }

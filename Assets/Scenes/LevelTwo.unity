@@ -493,6 +493,7 @@ MonoBehaviour:
   assetsOfPowerUpToSpawn:
   - {fileID: 2753206107570487345, guid: c5910d5ad91a404429f8536c946a16f1, type: 3}
   - {fileID: 5252326449495365156, guid: 8ec6eb271964f744d930d4d67cb77e14, type: 3}
+  - {fileID: 2753206107570487345, guid: b90281e33e300db4daf7803c87840bd5, type: 3}
 --- !u!4 &577791181
 Transform:
   m_ObjectHideFlags: 0

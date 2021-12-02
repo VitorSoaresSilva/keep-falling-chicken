@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Utilities;
-using Random = UnityEngine.Random;
 
 public class RunManager : Singleton<RunManager>
 {
     public RunData runData { get; private set; }
-    private Coroutine scoreCoroutine;
+    private Coroutine scoreCoroutine;  
     private bool isRunning;
 
     public UnityAction<int> OnGoldChanged;
     public UnityAction<int> OnScoreChanged;
+    public AnimationCurve scoreCurve;
+    public AnimationCurve goldCurve;
 
 
     public UnityAction OnGamePaused;
@@ -26,7 +27,8 @@ public class RunManager : Singleton<RunManager>
     public UnityAction OnPlayerLoses;
     public UnityAction OnPlayerWin;
     public UnityAction OnBossWin;
-    
+
+    public bool isDoublePointActive;
 
 
     public float timeBaseToBoss = 120;
@@ -92,6 +94,11 @@ public class RunManager : Singleton<RunManager>
     public void CollectGold(int gold)
     {
         runData.gold += gold;
+        runData.score += (int)goldCurve.Evaluate(runData.gold);
+        if (isDoublePointActive)
+        {
+            runData.score += (int)goldCurve.Evaluate(runData.gold);
+        }
         OnGoldChanged?.Invoke(runData.gold);
     }
 
@@ -108,7 +115,12 @@ public class RunManager : Singleton<RunManager>
     {
         while (isRunning)
         {
-            runData.score += 1;
+            runData.score += (int)scoreCurve.Evaluate(timeCurrent);
+            if (isDoublePointActive)
+            {
+                Debug.Log("Double");
+                runData.score += (int)scoreCurve.Evaluate(timeCurrent);
+            }
             OnScoreChanged?.Invoke(runData.score);
             timeCurrent++;
             OnDistanceChange?.Invoke(timeCurrent / timeBaseToBoss);
@@ -127,8 +139,6 @@ public class RunManager : Singleton<RunManager>
         timesPlayerHits++;
         if (timesPlayerHits > hitsPunishment.Length)
         {
-            Debug.Log("Player dies");
-            // OnDistanceTargetChange?.Invoke( hitsPunishment[timesPlayerHits - 1]);
             Invoke(nameof(PlayerLosesCall),1);
         }
         else
@@ -156,7 +166,11 @@ public class RunManager : Singleton<RunManager>
     {
         while (isRunning)
         {
-            runData.score += 1;
+            runData.score += (int)scoreCurve.Evaluate(timeCurrent);
+            if (isDoublePointActive)
+            {
+                runData.score += (int)scoreCurve.Evaluate(timeCurrent);
+            }
             OnScoreChanged?.Invoke(runData.score);
             timeCurrent++;
             OnDistanceChange?.Invoke(timeCurrent / timeBaseToWin);
