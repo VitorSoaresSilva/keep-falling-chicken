@@ -10,6 +10,7 @@ public class PUShield : PowerUp
         SceneDataHolder.instance.player.OnPlayerInivincibleHit.AddListener(HandlePlayerHit);
         inUse = true;
         PowerUpsManager.instance.playerInvincible = true;
+        StateMachine.instance.UI.GameView.shieldsIcon.SetActive(true);
         StartCoroutine(nameof(Disable));
     }
 
@@ -29,5 +30,6 @@ public class PUShield : PowerUp
         PowerUpsManager.instance.playerInvincible = false;
         SceneDataHolder.instance.player.OnPlayerInivincibleHit.RemoveListener(HandlePlayerHit);
         SceneDataHolder.instance.player.shieldObject.SetActive(false);
+        StateMachine.instance.UI.GameView.shieldsIcon.SetActive(false);
     }
 }

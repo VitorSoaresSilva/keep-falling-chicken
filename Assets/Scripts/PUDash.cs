@@ -15,6 +15,7 @@ public class PUDash : PowerUp
         PowerUpsManager.instance.OnDashUsedChanged?.Invoke(DashSpeed);
         inUse = true;
         PowerUpsManager.instance.playerInvincible = true;
+        StateMachine.instance.UI.GameView.dashIcon.SetActive(true);
         StartCoroutine(nameof(Disable));
     }
 
@@ -55,6 +56,7 @@ public class PUDash : PowerUp
         PowerUpsManager.instance.OnDashUsedChanged?.Invoke(-DashSpeed);
         currAmountCoinsToDash = 0;
         inUse = false;
+        StateMachine.instance.UI.GameView.dashIcon.SetActive(false);
         RunManager.instance.HandlePlayerUsesDash();
         //TODO: active a collider to kill the near boxes
         PowerUpsManager.instance.playerInvincible = false;

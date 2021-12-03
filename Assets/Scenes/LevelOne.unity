@@ -481,7 +481,7 @@ MonoBehaviour:
   distanceBetweenSpawns: 10
   positionOutOfCamera: {fileID: 1189432227}
   transformToSpawn: {fileID: 1151004707}
-  scale: {x: 2, y: 2, z: 1}
+  scale: {x: 1.5, y: 2, z: 1}
   progress: 0
   isDone: 0
   weightOfSpawnCategories: 140000000400000002000000

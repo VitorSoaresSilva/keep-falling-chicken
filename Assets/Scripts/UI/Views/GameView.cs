@@ -17,6 +17,9 @@ public class GameView : BaseView
     public Joystick joystick;
     public RectTransform handleJoystick;
     public GameObject doublePointsIcon;
+    public GameObject dashIcon;
+    public GameObject shieldsIcon;
+    public GameObject magnetIcon;
     public void PauseClick()
     {
         OnPauseClicked?.Invoke();
