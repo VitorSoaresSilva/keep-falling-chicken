@@ -10,7 +10,12 @@ public class PUMagnet : PowerUp
         inUse = true;
         magnetCollider.SetActive(true);
         SceneDataHolder.instance.player.magnetObject.SetActive(true);
+        StateMachine.instance.UI.GameView.dashIcon.SetActive(false);
+        StateMachine.instance.UI.GameView.doublePointsIcon.SetActive(false);
+        StateMachine.instance.UI.GameView.shieldsIcon.SetActive(false);
         StateMachine.instance.UI.GameView.magnetIcon.SetActive(true);
+        
+        
         StartCoroutine(nameof(Disable));
     }
 
