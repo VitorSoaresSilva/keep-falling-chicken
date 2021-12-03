@@ -13,7 +13,7 @@ public class GameOverState : BaseState
         owner.UI.GameOverView.OnStoreClicked += StoreClicked;
         Time.timeScale = 0;
         owner.UI.GameOverView.data = RunManager.instance.GetData();;
-        GameManager.instance.EarnData(RunManager.instance.GetData());
+        // GameManager.instance.EarnData(RunManager.instance.GetData());
         
         owner.UI.GameOverView.UpdateValues();
         RunManager.instance.StopRun();

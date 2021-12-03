@@ -14,7 +14,7 @@ public class WinState : BaseState
         owner.UI.WinView.OnStoreClicked += StoreClicked;
         
         owner.UI.WinView.data = RunManager.instance.GetData();;
-        GameManager.instance.EarnData(RunManager.instance.GetData());
+        // GameManager.instance.EarnData(RunManager.instance.GetData());
         
         owner.UI.WinView.UpdateValues();
         RunManager.instance.StopRun();
